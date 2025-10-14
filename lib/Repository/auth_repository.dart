@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class AuthService {
+class AuthRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   bool _initialized = false;
 

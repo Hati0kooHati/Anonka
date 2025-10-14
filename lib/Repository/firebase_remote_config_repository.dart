@@ -1,11 +1,11 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-class FirebaseRemoteConfigService {
+class FirebaseRemoteConfigRepository {
   final FirebaseRemoteConfig remoteConfig;
 
-  FirebaseRemoteConfigService._(this.remoteConfig);
+  FirebaseRemoteConfigRepository._(this.remoteConfig);
 
-  static Future<FirebaseRemoteConfigService> create() async {
+  static Future<FirebaseRemoteConfigRepository> create() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
 
     await remoteConfig.setConfigSettings(
@@ -23,7 +23,7 @@ class FirebaseRemoteConfigService {
       await remoteConfig.activate();
     });
 
-    return FirebaseRemoteConfigService._(remoteConfig);
+    return FirebaseRemoteConfigRepository._(remoteConfig);
   }
 
   String getMinRequiredVersion() =>

@@ -1,11 +1,11 @@
 import 'package:anonka/presentation/auth/google_auth/google_auth_state.dart';
-import 'package:anonka/service/auth_service.dart';
+import 'package:anonka/Repository/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class GoogleAuthBloc extends Cubit<GoogleAuthState> {
-  final AuthService authService;
+  final AuthRepository authService;
 
   GoogleAuthBloc(this.authService) : super(GoogleAuthState());
 

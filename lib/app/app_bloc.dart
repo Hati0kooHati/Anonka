@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:anonka/app/app_state.dart';
 import 'package:anonka/constants.dart';
 import 'package:anonka/core/helpers/error_handler.dart';
-import 'package:anonka/service/firebase_remote_config_service.dart';
+import 'package:anonka/Repository/firebase_remote_config_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 @injectable
 class AppBloc extends Cubit<AppState> {
-  final FirebaseRemoteConfigService firebaseRemoteConfigService;
+  final FirebaseRemoteConfigRepository firebaseRemoteConfigService;
   final PackageInfo packageInfo;
   final ErrorHandler errorHandler;
 

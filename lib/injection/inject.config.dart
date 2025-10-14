@@ -18,8 +18,9 @@ import 'package:anonka/presentation/auth/google_auth/google_auth_bloc.dart'
 import 'package:anonka/presentation/home/home_bloc.dart' as _i381;
 import 'package:anonka/presentation/posts/posts_bloc.dart' as _i824;
 import 'package:anonka/presentation/profile/profile_bloc.dart' as _i860;
-import 'package:anonka/service/auth_service.dart' as _i279;
-import 'package:anonka/service/firebase_remote_config_service.dart' as _i401;
+import 'package:anonka/Repository/auth_repository.dart' as _i540;
+import 'package:anonka/Repository/firebase_remote_config_repository.dart'
+    as _i633;
 import 'package:anonka/widgets/navigation_observer.dart' as _i225;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -33,7 +34,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    await gh.factoryAsync<_i401.FirebaseRemoteConfigService>(
+    await gh.factoryAsync<_i633.FirebaseRemoteConfigRepository>(
       () => registerModule.firebaseRemoteConfig(),
       preResolve: true,
     );
@@ -41,24 +42,24 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.packageInfo(),
       preResolve: true,
     );
-    gh.factory<_i279.AuthService>(() => _i279.AuthService());
     gh.factory<_i655.ErrorHandler>(() => _i655.ErrorHandler());
     gh.factory<_i381.HomeBloc>(() => _i381.HomeBloc());
     gh.factory<_i824.PostsBloc>(() => _i824.PostsBloc());
     gh.factory<_i860.ProfileBloc>(() => _i860.ProfileBloc());
     gh.factory<_i224.AddPostBloc>(() => _i224.AddPostBloc());
+    gh.factory<_i540.AuthRepository>(() => _i540.AuthRepository());
     gh.lazySingleton<_i225.NavigationObserver>(
       () => _i225.NavigationObserver(),
     );
     gh.factory<_i160.AppBloc>(
       () => _i160.AppBloc(
-        gh<_i401.FirebaseRemoteConfigService>(),
+        gh<_i633.FirebaseRemoteConfigRepository>(),
         gh<_i655.PackageInfo>(),
         gh<_i655.ErrorHandler>(),
       ),
     );
     gh.factory<_i173.GoogleAuthBloc>(
-      () => _i173.GoogleAuthBloc(gh<_i279.AuthService>()),
+      () => _i173.GoogleAuthBloc(gh<_i540.AuthRepository>()),
     );
     return this;
   }
