@@ -84,7 +84,7 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(
         state.copyWith(
-          posts: [...posts, ...state.posts],
+          posts: [...state.posts, ...posts],
           isLoading: false,
           hasMore: posts.length == pageSize,
         ),
