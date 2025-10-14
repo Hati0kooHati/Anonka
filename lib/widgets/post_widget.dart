@@ -21,11 +21,7 @@ class PostWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.purple.withAlpha(200), Colors.blue.withAlpha(200)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.purple[800],
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(

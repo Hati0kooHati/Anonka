@@ -89,8 +89,8 @@ class _CommentsSheetState extends State<CommentsSheet> {
       padding: const EdgeInsets.all(10.0),
       margin: const EdgeInsets.only(left: 15, right: 21, top: 10, bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.purple[800],
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,14 +124,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.purple.withAlpha(180),
-                    Colors.cyan.withAlpha(180),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: Colors.purple[800],
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
@@ -177,14 +170,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.pink.withAlpha(220),
-                  Colors.blue.withAlpha(220),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: Colors.purple[700],
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withAlpha(60),

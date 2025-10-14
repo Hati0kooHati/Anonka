@@ -15,13 +15,7 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.purple.withAlpha(180), Colors.cyan.withAlpha(180)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.black),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -35,14 +29,7 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.pink.withAlpha(200),
-                          Colors.blue.withAlpha(200),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      color: Colors.purple[600],
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withAlpha(60),
@@ -65,10 +52,7 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
-                    foreground: Paint()
-                      ..shader = const LinearGradient(
-                        colors: [Colors.cyan, Colors.purple],
-                      ).createShader(const Rect.fromLTWH(0, 0, 200, 40)),
+                    color: Colors.purple[600],
                     shadows: [
                       Shadow(
                         color: Colors.black.withAlpha(100),

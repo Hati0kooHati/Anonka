@@ -34,20 +34,13 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.pink.withAlpha(200), Colors.cyan.withAlpha(200)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.black),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
                 const Text(
                   'Напиши свой вайб ✨',
                   style: TextStyle(
@@ -58,86 +51,84 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Text input field
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(80),
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha(50),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _textController,
-                      maxLines: null,
-                      expands: true,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontFamily: 'Roboto',
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Поделись своим мнением 👀',
-                        hintStyle: TextStyle(
-                          color: Colors.white70,
-                          fontFamily: 'Roboto',
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
+
+                _buildInputField(),
                 const SizedBox(height: 16),
-                // Submit button
-                GestureDetector(
-                  onTap: () => bloc.publish(
-                    textController: _textController,
-                    onSuccess: onSuccess,
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple.withAlpha(220),
-                          Colors.blue.withAlpha(220),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha(50),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: state.isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              'Опубликовать!',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: 'Montserrat',
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
+
+                _buildSubmitButton(),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField() {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.purple[600],
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: TextField(
+          controller: _textController,
+          maxLines: null,
+          expands: true,
+          textAlignVertical: TextAlignVertical.top,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontFamily: 'Roboto',
+          ),
+          decoration: const InputDecoration(
+            hintText: 'Поделись своим мнением 👀',
+            hintStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+            border: InputBorder.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return GestureDetector(
+      onTap: () =>
+          bloc.publish(textController: _textController, onSuccess: onSuccess),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.purple[600],
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: state.isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : const Text(
+                  'Опубликовать!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
         ),
       ),
     );

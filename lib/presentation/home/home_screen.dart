@@ -23,7 +23,7 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
         index: state.tabIndex,
         children: [PostsScreen(), ProfileScreen()],
       ),
-      bottomNavigationBar: _buildStyledBottomNavigationBar(
+      bottomNavigationBar: _buildBottomNavigationBar(
         currentIndex: state.tabIndex,
         onTap: bloc.changeTab,
       ),
@@ -42,14 +42,7 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [
-            const Color.fromARGB(255, 242, 71, 59).withAlpha(220),
-            const Color.fromARGB(255, 3, 15, 255).withAlpha(220),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white.withAlpha(220),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(50),
@@ -62,21 +55,21 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
         onPressed: () => goToAddPostScreen(context),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        child: const Icon(Icons.add, size: 32, color: Colors.white),
+        child: Icon(Icons.add, size: 32, color: Colors.purple[500]),
       ),
     );
   }
 
-  BottomNavigationBar _buildStyledBottomNavigationBar({
+  BottomNavigationBar _buildBottomNavigationBar({
     required int currentIndex,
     required Function(int) onTap,
   }) {
     return BottomNavigationBar(
-      backgroundColor: Colors.deepPurple[900],
+      backgroundColor: Colors.black,
       elevation: 0,
       currentIndex: currentIndex,
       onTap: onTap,
-      items: _buildBottomNavigationItems(),
+      items: _buildBottomNavigationBarItems(),
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white.withAlpha(150),
       selectedLabelStyle: const TextStyle(
@@ -98,18 +91,14 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
     );
   }
 
-  List<BottomNavigationBarItem> _buildBottomNavigationItems() {
+  List<BottomNavigationBarItem> _buildBottomNavigationBarItems() {
     return [
       BottomNavigationBarItem(
         icon: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Colors.black.withAlpha(200), Colors.blue.withAlpha(200)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            color: Colors.purple[700],
           ),
           child: const Icon(
             Icons.local_post_office_outlined,
@@ -122,12 +111,7 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Colors.teal.withAlpha(220),
-                const Color.fromARGB(255, 17, 1, 255),
-              ],
-            ),
+            color: Colors.purple[500],
           ),
           child: const Icon(
             Icons.local_post_office,
@@ -141,9 +125,7 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Colors.teal.withAlpha(200), Colors.blue.withAlpha(200)],
-            ),
+            color: Colors.purple[700],
           ),
           child: const Icon(
             Icons.person_outline,
@@ -156,9 +138,7 @@ class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Colors.teal.withAlpha(220), Colors.black.withAlpha(220)],
-            ),
+            color: Colors.purple[500],
           ),
           child: const Icon(Icons.person, size: 28, color: Colors.white),
         ),
