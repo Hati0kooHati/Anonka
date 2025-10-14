@@ -1,0 +1,43 @@
+name: anonka
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  freezed_annotation: ^3.1.0
+  get_it: ^8.2.0
+  injectable: ^2.5.2
+  flutter_bloc: ^9.1.1
+  package_info_plus: ^9.0.0
+  firebase_core: ^4.1.1
+  firebase_remote_config: ^6.0.2
+  firebase_auth: ^6.1.0
+  cloud_firestore: ^6.0.2
+  url_launcher: ^6.3.2
+  google_sign_in: ^7.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  freezed: ^3.2.3
+  build_runner: ^2.4.13
+  injectable_generator: ^2.5.1
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Bold.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf

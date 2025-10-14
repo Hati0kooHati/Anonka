@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "877574020248",
+    "project_id": "anonka-askra",
+    "storage_bucket": "anonka-askra.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877574020248:android:b4a5aa223e28664455c4ed",
+        "android_client_info": {
+          "package_name": "com.askra.anonka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877574020248-khnarr0hgjhpfupgugrds8atoge24pvr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.askra.anonka",
+            "certificate_hash": "6028a09982bb5f5338077ed4f7a750f9d8dbe46a"
+          }
+        },
+        {
+          "client_id": "877574020248-q2uddkgc3l497uusk8062u9teqcmt1mk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKZ3_z5gjm3Eih_VsL95HLIYivniinMlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877574020248-q2uddkgc3l497uusk8062u9teqcmt1mk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "877574020248-phr7vlmggis76d7jm6sgfomaevdii5i2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.askra.anonka"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
