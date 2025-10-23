@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 
 class CommentsSheet extends StatefulWidget {
   final Post post;
-  final Function({
-    required TextEditingController commentController,
-    required Post post,
-  })
-  sendComment;
+  final Function({required String text, required Post post}) sendComment;
 
   const CommentsSheet({
     super.key,
@@ -22,11 +18,23 @@ class CommentsSheet extends StatefulWidget {
 
 class _CommentsSheetState extends State<CommentsSheet> {
   late TextEditingController _commentController;
+  late Post post;
+
+  void sendComment() {
+    final String text = _commentController.text;
+
+    widget.sendComment(post: post, text: text);
+    setState(() {
+      _commentController.clear();
+      post = post.copyWith(comments: [text, ...post.comments]);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _commentController = TextEditingController();
+    post = widget.post;
   }
 
   @override
@@ -67,9 +75,9 @@ class _CommentsSheetState extends State<CommentsSheet> {
                   Expanded(
                     child: ListView.builder(
                       controller: scrollController,
-                      itemCount: widget.post.comments.length,
+                      itemCount: post.comments.length,
                       itemBuilder: (context, index) {
-                        return _buildComment(widget.post.comments[index]);
+                        return _buildComment(post.comments[index]);
                       },
                     ),
                   ),
@@ -186,10 +194,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                 elevation: 0,
                 shape: const CircleBorder(),
               ),
-              onPressed: () => widget.sendComment(
-                post: widget.post,
-                commentController: _commentController,
-              ),
+              onPressed: sendComment,
               child: const Icon(
                 Icons.arrow_upward_rounded,
                 color: Colors.white,

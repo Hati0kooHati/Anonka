@@ -17,4 +17,7 @@ class AppStrings {
   static const noPosts = "Анонимки не найдены. Попробуйте создать";
   static const anonim = "Аноним";
   static const writeComment = "Напишите комментарий...";
+  static const shareWithYourThoughts = "Поделись своим мнением";
+  static const publish = "Опубликовать";
+  static const yourAccount = "Твой аккаунт";
 }

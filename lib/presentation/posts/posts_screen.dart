@@ -48,7 +48,7 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           SizedBox(height: height * 0.40),
-          Center(child: CircularProgressIndicator(color: Colors.blue[900])),
+          Center(child: CircularProgressIndicator(color: Colors.purple)),
         ],
       );
     } else if (state.posts.isEmpty) {
@@ -87,7 +87,7 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
     }
 
     return RefreshIndicator(
-      color: const Color.fromARGB(255, 9, 6, 101),
+      color: Colors.purple,
       backgroundColor: Colors.white,
       elevation: 0,
       onRefresh: bloc.refresh,

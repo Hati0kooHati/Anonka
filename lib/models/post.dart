@@ -6,7 +6,7 @@ part 'post.freezed.dart';
 @freezed
 abstract class Post with _$Post {
   const factory Post({
-    required final String postId,
+    required final String id,
     required final String text,
     required final Timestamp createdAt,
     required final List likes,
@@ -16,13 +16,14 @@ abstract class Post with _$Post {
 
   factory Post.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
+    print(doc['comments']);
     return Post(
-      postId: doc.id,
+      id: doc.id,
       text: data['text'] ?? '',
-      createdAt: data['createdAt'] as Timestamp,
-      comments: doc['comments'],
-      likes: doc['likes'],
-      dislikes: doc['dislikes'],
+      createdAt: data['createdAt'] ?? FieldValue.serverTimestamp(),
+      comments: doc['comments'] ?? [],
+      likes: doc['likes'] ?? [],
+      dislikes: doc['dislikes'] ?? [],
     );
   }
 }

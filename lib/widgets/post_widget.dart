@@ -34,7 +34,6 @@ class PostWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Anonymous header
           Row(
             children: [
               Container(
@@ -58,7 +57,6 @@ class PostWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          // Main post text
           Text(
             post.text,
             style: const TextStyle(
@@ -69,7 +67,6 @@ class PostWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          // Action buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

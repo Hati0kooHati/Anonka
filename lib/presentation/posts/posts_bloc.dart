@@ -10,12 +10,12 @@ import 'package:injectable/injectable.dart';
 class PostsBloc extends Cubit<PostsState> {
   PostsBloc() : super(PostsState());
 
-  final String? user = FirebaseAuth.instance.currentUser?.email;
+  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
 
   Function(dynamic e)? showError;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   DocumentSnapshot? _lastDoc;
-  static const int pageSize = 10;
+  static const int pageSize = 5;
 
   bool onScrollNotification(ScrollEndNotification scrollInfo) {
     final isAtBottom =
@@ -96,32 +96,32 @@ class PostsBloc extends Cubit<PostsState> {
   }
 
   void toggleLike(Post post) {
-    if (user == null) return;
+    if (userEmail == null) return;
 
     try {
       final newPosts = [...state.posts];
 
-      if (post.likes.contains(user)) {
+      if (post.likes.contains(userEmail)) {
         final postIndex = newPosts.indexOf(post);
 
         final newPostlikes = newPosts[postIndex].likes.toList();
 
-        newPostlikes.remove(user);
+        newPostlikes.remove(userEmail);
 
         newPosts[postIndex] = post.copyWith(likes: newPostlikes);
 
         emit(state.copyWith(posts: newPosts));
 
-        _firestore.collection("mukr_west_college").doc(post.postId).update({
-          "likes": FieldValue.arrayRemove([user]),
+        _firestore.collection("mukr_west_college").doc(post.id).update({
+          "likes": FieldValue.arrayRemove([userEmail]),
         });
       } else {
         newPosts[newPosts.indexOf(post)] = post.copyWith(
-          likes: [user!, ...post.likes],
+          likes: [userEmail!, ...post.likes],
         );
 
-        _firestore.collection("mukr_west_college").doc(post.postId).update({
-          "likes": FieldValue.arrayUnion([user]),
+        _firestore.collection("mukr_west_college").doc(post.id).update({
+          "likes": FieldValue.arrayUnion([userEmail]),
         });
       }
 
@@ -132,30 +132,30 @@ class PostsBloc extends Cubit<PostsState> {
   }
 
   void toggleDislike(Post post) {
-    if (user == null) return;
+    if (userEmail == null) return;
 
     try {
       final newPosts = [...state.posts];
 
-      if (post.dislikes.contains(user)) {
+      if (post.dislikes.contains(userEmail)) {
         final postIndex = newPosts.indexOf(post);
 
         final newPostDislikes = newPosts[postIndex].dislikes.toList();
 
-        newPostDislikes.remove(user);
+        newPostDislikes.remove(userEmail);
 
         newPosts[postIndex] = post.copyWith(dislikes: newPostDislikes);
 
-        _firestore.collection("mukr_west_college").doc(post.postId).update({
-          "dislikes": FieldValue.arrayRemove([user]),
+        _firestore.collection("mukr_west_college").doc(post.id).update({
+          "dislikes": FieldValue.arrayRemove([userEmail]),
         });
       } else {
         newPosts[newPosts.indexOf(post)] = post.copyWith(
-          dislikes: [user!, ...post.dislikes],
+          dislikes: [userEmail!, ...post.dislikes],
         );
 
-        _firestore.collection("mukr_west_college").doc(post.postId).update({
-          "dislikes": FieldValue.arrayUnion([user]),
+        _firestore.collection("mukr_west_college").doc(post.id).update({
+          "dislikes": FieldValue.arrayUnion([userEmail]),
         });
       }
 
@@ -165,29 +165,20 @@ class PostsBloc extends Cubit<PostsState> {
     }
   }
 
-  void sendComment({
-    required TextEditingController commentController,
-    required Post post,
-  }) {
+  void sendComment({required Post post, required String text}) {
     try {
       final newPosts = [...state.posts];
-      final String text = commentController.text;
 
       if (text.isEmpty) return;
 
-      _firestore
-          .collection("mukr_west_college")
-          .doc(post.postId)
-          .collection("comments")
-          .add({"text": text});
+      _firestore.collection("mukr_west_college").doc(post.id).update({
+        "comments": [text, ...post.comments],
+      });
 
-      newPosts[newPosts.indexOf(post)] = post.copyWith(
-        comments: [text, ...post.comments],
-      );
+      final int postIndex = newPosts.indexWhere((p) => p.id == post.id);
 
+      newPosts[postIndex] = post.copyWith(comments: [text, ...post.comments]);
       emit(state.copyWith(posts: newPosts));
-
-      commentController.clear();
     } catch (e) {
       showError?.call(e);
     }

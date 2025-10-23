@@ -21,6 +21,8 @@ dependencies:
   cloud_firestore: ^6.0.2
   url_launcher: ^6.3.2
   google_sign_in: ^7.2.0
+  flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -41,3 +43,19 @@ flutter:
     - family: Roboto
       fonts:
         - asset: fonts/Roboto-Regular.ttf
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/logo.png
+  android: true
+  ios: true
+  web: false
+
+  android_12:
+    color: "#000000"
+    image: assets/images/logo.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"

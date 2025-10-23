@@ -13,6 +13,7 @@ import 'package:anonka/app/app_bloc.dart' as _i160;
 import 'package:anonka/core/helpers/error_handler.dart' as _i655;
 import 'package:anonka/injection/register_module.dart' as _i552;
 import 'package:anonka/presentation/add_post/add_post_bloc.dart' as _i224;
+import 'package:anonka/presentation/add_post/add_post_screen.dart' as _i583;
 import 'package:anonka/presentation/auth/google_auth/google_auth_bloc.dart'
     as _i173;
 import 'package:anonka/presentation/home/home_bloc.dart' as _i381;
@@ -21,7 +22,7 @@ import 'package:anonka/presentation/profile/profile_bloc.dart' as _i860;
 import 'package:anonka/Repository/auth_repository.dart' as _i540;
 import 'package:anonka/Repository/firebase_remote_config_repository.dart'
     as _i633;
-import 'package:anonka/widgets/navigation_observer.dart' as _i225;
+import 'package:flutter/material.dart' as _i409;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:package_info_plus/package_info_plus.dart' as _i655;
@@ -48,8 +49,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i860.ProfileBloc>(() => _i860.ProfileBloc());
     gh.factory<_i224.AddPostBloc>(() => _i224.AddPostBloc());
     gh.factory<_i540.AuthRepository>(() => _i540.AuthRepository());
-    gh.lazySingleton<_i225.NavigationObserver>(
-      () => _i225.NavigationObserver(),
+    gh.factory<_i583.AddPostScreen>(
+      () => _i583.AddPostScreen(key: gh<_i409.Key>()),
     );
     gh.factory<_i160.AppBloc>(
       () => _i160.AppBloc(

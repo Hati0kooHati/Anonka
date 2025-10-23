@@ -1,5 +1,4 @@
 import 'package:anonka/injection/inject.dart';
-import 'package:anonka/widgets/navigation_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,23 +19,23 @@ abstract class StateblocWidget<B extends Cubit<S>, S> extends StatefulWidget {
 
   void dispose() {}
 
-  void onResume() {}
-
-  void onUpdate() {}
-
   @override
   State<StateblocWidget<B, S>> createState() => _StateblocWidgetState();
 }
 
 class _StateblocWidgetState<B extends Cubit<S>, S>
-    extends State<StateblocWidget<B, S>>
-    with RouteAware {
-  NavigationObserver get navigationObserver => get<NavigationObserver>();
-
+    extends State<StateblocWidget<B, S>> {
   @override
   void initState() {
     super.initState();
     widget.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.dispose();
+    widget.store.clear();
+    super.dispose();
   }
 
   @override
@@ -54,36 +53,6 @@ class _StateblocWidgetState<B extends Cubit<S>, S>
         },
       ),
     );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final route = ModalRoute.of(context);
-    if (route is PageRoute) navigationObserver.subscribe(this, route);
-  }
-
-  @override
-  void dispose() {
-    navigationObserver.unsubscribe(this);
-    widget.dispose();
-    widget.store.clear();
-    super.dispose();
-  }
-
-  @override
-  void didPush() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => widget.onResume());
-  }
-
-  @override
-  void didPopNext() {
-    widget.onResume();
-    final route = ModalRoute.of(context);
-    final path = route?.settings.name;
-    if (path == null) return;
-    final shouldUpdate = navigationObserver.shouldUpdate(path);
-    if (shouldUpdate) widget.onUpdate();
   }
 }
 

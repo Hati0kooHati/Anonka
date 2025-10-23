@@ -1,3 +1,4 @@
+import 'package:anonka/constants.dart';
 import 'package:anonka/presentation/profile/profile_bloc.dart';
 import 'package:anonka/presentation/profile/profile_state.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
@@ -47,7 +48,7 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Твой аккаунт',
+                  AppStrings.yourAccount,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,

@@ -1,27 +1,36 @@
+import 'package:anonka/constants.dart';
 import 'package:anonka/presentation/add_post/add_post_bloc.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:anonka/widgets/custom_app_bar.dart';
 import 'package:anonka/widgets/custom_snack_bar.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
-  final TextEditingController _textController = TextEditingController();
-
   AddPostScreen({super.key});
+
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.showSnackBar = (Widget content) {
-        CustomSnackBar.showSnackBar(
-          context,
-          content: content,
-          duration: Duration(milliseconds: 500),
-        );
-      };
+      bloc.showSnackBar =
+          ({
+            required Widget content,
+            required Color color,
+            required Duration duration,
+          }) {
+            CustomSnackBar.showSnackBar(
+              context,
+              content: content,
+              backgroundColor: color,
+              duration: duration,
+            );
+          };
     });
   }
 
@@ -41,21 +50,13 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Напиши свой вайб ✨',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontFamily: 'Montserrat',
-                  ),
-                ),
                 const SizedBox(height: 20),
 
                 _buildInputField(),
                 const SizedBox(height: 16),
 
                 _buildSubmitButton(),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -90,7 +91,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
             fontFamily: 'Roboto',
           ),
           decoration: const InputDecoration(
-            hintText: 'Поделись своим мнением 👀',
+            hintText: AppStrings.shareWithYourThoughts,
             hintStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
             border: InputBorder.none,
           ),
@@ -121,7 +122,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
           child: state.isLoading
               ? const CircularProgressIndicator(color: Colors.white)
               : const Text(
-                  'Опубликовать!',
+                  AppStrings.publish,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
