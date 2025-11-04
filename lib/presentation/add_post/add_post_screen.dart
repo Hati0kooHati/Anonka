@@ -5,9 +5,7 @@ import 'package:anonka/widgets/custom_app_bar.dart';
 import 'package:anonka/widgets/custom_snack_bar.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
-@injectable
 class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
   AddPostScreen({super.key});
 

@@ -8,13 +8,14 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class PostsBloc extends Cubit<PostsState> {
-  PostsBloc() : super(PostsState());
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth? _firebaseAuth;
 
-  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  PostsBloc(this._firestore, this._firebaseAuth) : super(PostsState());
 
   Function(dynamic e)? showError;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   DocumentSnapshot? _lastDoc;
+  bool _hasMore = true;
   static const int pageSize = 5;
 
   bool onScrollNotification(ScrollEndNotification scrollInfo) {
@@ -31,10 +32,9 @@ class PostsBloc extends Cubit<PostsState> {
   Future<void> refresh() async {
     if (state.isLoading) return;
 
-    emit(state.copyWith(posts: [], hasMore: true));
+    clear();
 
     loadInitial();
-    return Future.delayed(const Duration(seconds: 0));
   }
 
   Future<void> loadInitial() async {
@@ -52,22 +52,18 @@ class PostsBloc extends Cubit<PostsState> {
         _lastDoc = snap.docs.last;
       }
 
-      emit(
-        state.copyWith(
-          posts: posts,
-          isLoading: false,
-          hasMore: posts.length == pageSize,
-        ),
-      );
+      emit(state.copyWith(posts: posts, isLoading: false));
+
+      _hasMore = posts.length == pageSize;
     } catch (e) {
       emit(state.copyWith(isLoading: false));
-      debugPrint("loadInitial - $e");
+      debugPrint("PostsBloc loadInitial - $e");
       showError?.call(e);
     }
   }
 
   void loadMore() async {
-    if (!state.hasMore || state.isLoading || _lastDoc == null) return;
+    if (!_hasMore || state.isLoading || _lastDoc == null) return;
 
     emit(state.copyWith(isLoading: true));
 
@@ -82,20 +78,19 @@ class PostsBloc extends Cubit<PostsState> {
       final posts = snap.docs.map((doc) => Post.fromDoc(doc)).toList();
       _lastDoc = snap.docs.last;
 
-      emit(
-        state.copyWith(
-          posts: [...state.posts, ...posts],
-          isLoading: false,
-          hasMore: posts.length == pageSize,
-        ),
-      );
+      emit(state.copyWith(posts: [...state.posts, ...posts], isLoading: false));
+
+      _hasMore = posts.length == pageSize;
     } catch (e) {
       emit(state.copyWith(isLoading: false));
+      debugPrint("PostsBloc loadMore - $e");
       showError?.call(e);
     }
   }
 
   void toggleLike(Post post) {
+    final String? userEmail = _firebaseAuth?.currentUser?.email;
+
     if (userEmail == null) return;
 
     try {
@@ -117,7 +112,7 @@ class PostsBloc extends Cubit<PostsState> {
         });
       } else {
         newPosts[newPosts.indexOf(post)] = post.copyWith(
-          likes: [userEmail!, ...post.likes],
+          likes: [userEmail, ...post.likes],
         );
 
         _firestore.collection("mukr_west_college").doc(post.id).update({
@@ -132,6 +127,8 @@ class PostsBloc extends Cubit<PostsState> {
   }
 
   void toggleDislike(Post post) {
+    final String? userEmail = _firebaseAuth?.currentUser?.email;
+
     if (userEmail == null) return;
 
     try {
@@ -151,7 +148,7 @@ class PostsBloc extends Cubit<PostsState> {
         });
       } else {
         newPosts[newPosts.indexOf(post)] = post.copyWith(
-          dislikes: [userEmail!, ...post.dislikes],
+          dislikes: [userEmail, ...post.dislikes],
         );
 
         _firestore.collection("mukr_west_college").doc(post.id).update({
@@ -165,22 +162,8 @@ class PostsBloc extends Cubit<PostsState> {
     }
   }
 
-  void sendComment({required Post post, required String text}) {
-    try {
-      final newPosts = [...state.posts];
-
-      if (text.isEmpty) return;
-
-      _firestore.collection("mukr_west_college").doc(post.id).update({
-        "comments": [text, ...post.comments],
-      });
-
-      final int postIndex = newPosts.indexWhere((p) => p.id == post.id);
-
-      newPosts[postIndex] = post.copyWith(comments: [text, ...post.comments]);
-      emit(state.copyWith(posts: newPosts));
-    } catch (e) {
-      showError?.call(e);
-    }
+  void clear() {
+    emit(state.copyWith(posts: []));
+    _lastDoc = null;
   }
 }

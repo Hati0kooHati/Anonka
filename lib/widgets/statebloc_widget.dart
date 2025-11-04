@@ -1,9 +1,11 @@
-import 'package:anonka/injection/inject.dart';
+import 'package:anonka/injection/inject.dart' as inject;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class StateblocWidget<B extends Cubit<S>, S> extends StatefulWidget {
-  StateblocWidget({super.key});
+  final B Function(BuildContext context)? createBloc;
+
+  StateblocWidget({super.key, this.createBloc});
 
   final store = _StateblocStore<B, S>();
 
@@ -41,7 +43,7 @@ class _StateblocWidgetState<B extends Cubit<S>, S>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => get<B>(),
+      create: (_) => widget.createBloc?.call(context) ?? inject.get<B>(),
       child: BlocBuilder<B, S>(
         builder: (context, state) {
           widget.store

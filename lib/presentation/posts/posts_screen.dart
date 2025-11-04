@@ -1,10 +1,10 @@
 import 'package:anonka/constants.dart';
 import 'package:anonka/core/helpers/error_handler.dart';
 import 'package:anonka/models/post.dart';
+import 'package:anonka/presentation/comment/comments_screen.dart';
 import 'package:anonka/presentation/posts/posts_bloc.dart';
 import 'package:anonka/presentation/posts/posts_state.dart';
-import 'package:anonka/widgets/comments_sheet.dart';
-import 'package:anonka/widgets/post_widget.dart';
+import 'package:anonka/presentation/posts/widgets/post_widget.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) {
-        return CommentsSheet(post: post, sendComment: bloc.sendComment);
+        return CommentsScreen(commentId: post.id);
       },
     );
   }

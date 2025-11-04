@@ -7,6 +7,5 @@ abstract class PostsState with _$PostsState {
   const factory PostsState({
     @Default(false) bool isLoading,
     @Default([]) List<Post> posts,
-    @Default(true) bool hasMore,
   }) = _PostsState;
 }

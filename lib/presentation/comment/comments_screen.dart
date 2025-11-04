@@ -1,40 +1,30 @@
 import 'package:anonka/constants.dart';
-import 'package:anonka/models/post.dart';
+import 'package:anonka/core/helpers/error_handler.dart';
+import 'package:anonka/injection/inject.dart';
+import 'package:anonka/models/comment.dart';
+import 'package:anonka/presentation/comment/comments_bloc.dart';
+import 'package:anonka/presentation/comment/comments_state.dart';
+import 'package:anonka/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
-class CommentsSheet extends StatefulWidget {
-  final Post post;
-  final Function({required String text, required Post post}) sendComment;
+class CommentsScreen extends StateblocWidget<CommentsBloc, CommentsState> {
+  final String commentId;
 
-  const CommentsSheet({
-    super.key,
-    required this.post,
-    required this.sendComment,
-  });
+  CommentsScreen({super.key, required this.commentId})
+    : super(createBloc: (context) => get<CommentsBloc>(param1: commentId));
 
-  @override
-  State<CommentsSheet> createState() => _CommentsSheetState();
-}
-
-class _CommentsSheetState extends State<CommentsSheet> {
-  late TextEditingController _commentController;
-  late Post post;
-
-  void sendComment() {
-    final String text = _commentController.text;
-
-    widget.sendComment(post: post, text: text);
-    setState(() {
-      _commentController.clear();
-      post = post.copyWith(comments: [text, ...post.comments]);
-    });
-  }
+  final TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _commentController = TextEditingController();
-    post = widget.post;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bloc.loadInitial();
+      bloc.showError = (dynamic e) {
+        ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
+      };
+    });
   }
 
   @override
@@ -43,8 +33,67 @@ class _CommentsSheetState extends State<CommentsSheet> {
     super.dispose();
   }
 
+  void sendComment() {
+    bloc.sendComment(text: _commentController.text);
+    _commentController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget Function(ScrollController scrollController) mainContent;
+
+    if (state.isLoading && state.comments.isEmpty) {
+      mainContent = (ScrollController scrollController) => ListView(
+        controller: ScrollController(),
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Center(
+              child: CircularProgressIndicator(color: Colors.purple),
+            ),
+          ),
+        ],
+      );
+    } else if (state.comments.isEmpty) {
+      mainContent = (ScrollController scrollController) => ListView(
+        controller: scrollController,
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Center(child: Text(AppStrings.noComments)),
+          ),
+        ],
+      );
+    } else {
+      final List<Comment> comments = state.comments;
+      final int commentsLen = comments.length;
+
+      mainContent = (ScrollController scrollController) => ListView.builder(
+        controller: scrollController,
+        shrinkWrap: true,
+        itemCount: commentsLen + (state.isLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index < commentsLen) {
+            final Comment comment = comments[index];
+
+            return _buildComment(comment);
+          } else {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+        },
+      );
+    }
+
+    return _buildCommentSheet(mainContent);
+  }
+
+  Widget _buildCommentSheet(
+    Widget Function(ScrollController scrollController) mainContent,
+  ) {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.only(
@@ -52,8 +101,8 @@ class _CommentsSheetState extends State<CommentsSheet> {
         ),
         child: DraggableScrollableSheet(
           initialChildSize: 0.7,
-          minChildSize: 0.5,
-          maxChildSize: 0.9,
+          minChildSize: 0.7,
+          maxChildSize: 1,
           expand: false,
           builder: (context, scrollController) {
             return Container(
@@ -63,6 +112,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
               ),
               child: Column(
                 children: [
+                  const SizedBox(height: 3),
                   Container(
                     width: 40,
                     height: 4,
@@ -72,16 +122,19 @@ class _CommentsSheetState extends State<CommentsSheet> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
+
                   Expanded(
-                    child: ListView.builder(
-                      controller: scrollController,
-                      itemCount: post.comments.length,
-                      itemBuilder: (context, index) {
-                        return _buildComment(post.comments[index]);
-                      },
+                    child: RefreshIndicator(
+                      color: Colors.purple,
+                      backgroundColor: Colors.white,
+                      elevation: 0,
+                      onRefresh: bloc.refresh,
+                      child: NotificationListener<ScrollEndNotification>(
+                        onNotification: bloc.onScrollNotification,
+                        child: mainContent(scrollController),
+                      ),
                     ),
                   ),
-
                   _buildCommentInputField(),
                 ],
               ),
@@ -92,7 +145,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
     );
   }
 
-  Widget _buildComment(String comment) {
+  Widget _buildComment(Comment comment) {
     return Container(
       padding: const EdgeInsets.all(10.0),
       margin: const EdgeInsets.only(left: 15, right: 21, top: 10, bottom: 8),
@@ -115,7 +168,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
           ),
           const SizedBox(height: 8.0),
           SelectableText(
-            comment,
+            comment.text,
             style: const TextStyle(color: Colors.white, fontSize: 18.0),
           ),
         ],

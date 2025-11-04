@@ -1,3 +1,4 @@
+import 'package:anonka/constants.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +8,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class AddPostBloc extends Cubit<AddPostState> {
-  AddPostBloc() : super(AddPostState());
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth? _firebaseAuth;
+
+  AddPostBloc(this._firestore, this._firebaseAuth) : super(AddPostState());
 
   Function({
     required Widget content,
@@ -15,8 +19,6 @@ class AddPostBloc extends Cubit<AddPostState> {
     required Duration duration,
   })?
   showSnackBar;
-  final _firestore = FirebaseFirestore.instance;
-  final user = FirebaseAuth.instance.currentUser;
 
   void publish({
     required TextEditingController textController,
@@ -24,11 +26,14 @@ class AddPostBloc extends Cubit<AddPostState> {
   }) async {
     final String text = textController.text.trim();
 
-    if (user == null || state.isLoading || text.isEmpty) return;
+    if (_firebaseAuth?.currentUser?.email == null ||
+        state.isLoading ||
+        text.isEmpty)
+      return;
 
     if (text.length < 5) {
       showSnackBar?.call(
-        content: Text("Слишком мало"),
+        content: Text(AppStrings.shortTextLength),
         color: Colors.yellow,
         duration: Duration(seconds: 3),
       );
@@ -38,7 +43,7 @@ class AddPostBloc extends Cubit<AddPostState> {
 
     if (text.length > 2000) {
       showSnackBar?.call(
-        content: Text("Бро, пиши поменьше 😑"),
+        content: Text(AppStrings.longTextLength),
         color: Colors.yellow,
         duration: Duration(seconds: 3),
       );
@@ -52,12 +57,11 @@ class AddPostBloc extends Cubit<AddPostState> {
       final text = textController.text;
 
       await _firestore.collection('mukr_west_college').add({
-        'userGmail': user!.email,
+        'userGmail': _firebaseAuth!.currentUser!.email,
         'createdAt': FieldValue.serverTimestamp(),
         'text': text,
         'likes': [],
         'dislikes': [],
-        'comments': [],
       });
 
       showSnackBar?.call(

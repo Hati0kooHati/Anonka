@@ -85,7 +85,7 @@ class PostWidget extends StatelessWidget {
               // Comment button
               _buildActionButton(
                 icon: Icons.comment,
-                count: post.comments.length,
+                count: null,
                 onPressed: onCommentPressed,
               ),
             ],
@@ -97,7 +97,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _buildActionButton({
     required IconData icon,
-    required int count,
+    required int? count,
     required Function(Post) onPressed,
   }) {
     return GestureDetector(
@@ -113,7 +113,7 @@ class PostWidget extends StatelessWidget {
             Icon(icon, size: 20, color: Colors.white),
             const SizedBox(width: 4),
             Text(
-              '$count',
+              '${count ?? ''}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white,

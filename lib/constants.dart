@@ -20,4 +20,7 @@ class AppStrings {
   static const shareWithYourThoughts = "Поделись своим мнением";
   static const publish = "Опубликовать";
   static const yourAccount = "Твой аккаунт";
+  static const noComments = "Нет комментариев...";
+  static const shortTextLength = "Слишком мало";
+  static const longTextLength = "Пиши поменьше";
 }

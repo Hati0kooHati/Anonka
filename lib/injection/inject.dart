@@ -4,7 +4,11 @@ import 'package:anonka/injection/inject.config.dart';
 
 final getIt = GetIt.instance;
 
-T get<T extends Object>() => getIt.get<T>();
+T get<T extends Object>({
+  String? instanceName,
+  dynamic param1,
+  dynamic param2,
+}) => getIt.get<T>(instanceName: instanceName, param1: param1, param2: param2);
 
 @InjectableInit(preferRelativeImports: false)
 Future<void> configureDependencies() async => getIt.init();

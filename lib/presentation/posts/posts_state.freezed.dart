@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PostsState {
 
- bool get isLoading; List<Post> get posts; bool get hasMore;
+ bool get isLoading; List<Post> get posts;
 /// Create a copy of PostsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PostsStateCopyWith<PostsState> get copyWith => _$PostsStateCopyWithImpl<PostsSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostsState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.posts, posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostsState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.posts, posts));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(posts),hasMore);
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(posts));
 
 @override
 String toString() {
-  return 'PostsState(isLoading: $isLoading, posts: $posts, hasMore: $hasMore)';
+  return 'PostsState(isLoading: $isLoading, posts: $posts)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PostsStateCopyWith<$Res>  {
   factory $PostsStateCopyWith(PostsState value, $Res Function(PostsState) _then) = _$PostsStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, List<Post> posts, bool hasMore
+ bool isLoading, List<Post> posts
 });
 
 
@@ -62,12 +62,11 @@ class _$PostsStateCopyWithImpl<$Res>
 
 /// Create a copy of PostsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? posts = null,Object? hasMore = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? posts = null,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
-as List<Post>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<Post>,
   ));
 }
 
@@ -152,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  List<Post> posts,  bool hasMore)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  List<Post> posts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostsState() when $default != null:
-return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
+return $default(_that.isLoading,_that.posts);case _:
   return orElse();
 
 }
@@ -173,10 +172,10 @@ return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  List<Post> posts,  bool hasMore)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  List<Post> posts)  $default,) {final _that = this;
 switch (_that) {
 case _PostsState():
-return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
+return $default(_that.isLoading,_that.posts);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +192,10 @@ return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  List<Post> posts,  bool hasMore)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  List<Post> posts)?  $default,) {final _that = this;
 switch (_that) {
 case _PostsState() when $default != null:
-return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
+return $default(_that.isLoading,_that.posts);case _:
   return null;
 
 }
@@ -208,7 +207,7 @@ return $default(_that.isLoading,_that.posts,_that.hasMore);case _:
 
 
 class _PostsState implements PostsState {
-  const _PostsState({this.isLoading = false, final  List<Post> posts = const [], this.hasMore = true}): _posts = posts;
+  const _PostsState({this.isLoading = false, final  List<Post> posts = const []}): _posts = posts;
   
 
 @override@JsonKey() final  bool isLoading;
@@ -219,7 +218,6 @@ class _PostsState implements PostsState {
   return EqualUnmodifiableListView(_posts);
 }
 
-@override@JsonKey() final  bool hasMore;
 
 /// Create a copy of PostsState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +229,16 @@ _$PostsStateCopyWith<_PostsState> get copyWith => __$PostsStateCopyWithImpl<_Pos
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostsState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._posts, _posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostsState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._posts, _posts));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_posts),hasMore);
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_posts));
 
 @override
 String toString() {
-  return 'PostsState(isLoading: $isLoading, posts: $posts, hasMore: $hasMore)';
+  return 'PostsState(isLoading: $isLoading, posts: $posts)';
 }
 
 
@@ -251,7 +249,7 @@ abstract mixin class _$PostsStateCopyWith<$Res> implements $PostsStateCopyWith<$
   factory _$PostsStateCopyWith(_PostsState value, $Res Function(_PostsState) _then) = __$PostsStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, List<Post> posts, bool hasMore
+ bool isLoading, List<Post> posts
 });
 
 
@@ -268,12 +266,11 @@ class __$PostsStateCopyWithImpl<$Res>
 
 /// Create a copy of PostsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? posts = null,Object? hasMore = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? posts = null,}) {
   return _then(_PostsState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
-as List<Post>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<Post>,
   ));
 }
 
