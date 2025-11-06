@@ -19,8 +19,8 @@ import 'package:anonka/presentation/comment/comments_bloc.dart' as _i989;
 import 'package:anonka/presentation/home/home_bloc.dart' as _i381;
 import 'package:anonka/presentation/posts/posts_bloc.dart' as _i824;
 import 'package:anonka/presentation/profile/profile_bloc.dart' as _i860;
-import 'package:anonka/Repository/auth_repository.dart' as _i540;
-import 'package:anonka/Repository/firebase_remote_config_repository.dart'
+import 'package:anonka/repository/auth_repository.dart' as _i540;
+import 'package:anonka/repository/firebase_remote_config_repository.dart'
     as _i633;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;

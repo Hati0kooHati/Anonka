@@ -33,6 +33,7 @@ flutter run
 ```
 
 ## Technologies
+
 Flutter: ^3.32.4(Stable)
 Bloc: ^9.1.1
 

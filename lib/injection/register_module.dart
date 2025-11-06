@@ -1,4 +1,4 @@
-import 'package:anonka/Repository/firebase_remote_config_repository.dart';
+import 'package:anonka/repository/firebase_remote_config_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';

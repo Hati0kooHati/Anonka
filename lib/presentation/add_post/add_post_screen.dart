@@ -1,4 +1,4 @@
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/presentation/add_post/add_post_bloc.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:anonka/widgets/custom_app_bar.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
   AddPostScreen({super.key});
 
-  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _postInputController = TextEditingController();
 
   @override
   void initState() {
@@ -30,6 +30,12 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
             );
           };
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _postInputController.dispose();
   }
 
   void onSuccess() {
@@ -79,7 +85,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
           ],
         ),
         child: TextField(
-          controller: _textController,
+          controller: _postInputController,
           maxLines: null,
           expands: true,
           textAlignVertical: TextAlignVertical.top,
@@ -101,7 +107,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
   Widget _buildSubmitButton() {
     return GestureDetector(
       onTap: () =>
-          bloc.publish(textController: _textController, onSuccess: onSuccess),
+          bloc.publish(text: _postInputController.text, onSuccess: onSuccess),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 12),

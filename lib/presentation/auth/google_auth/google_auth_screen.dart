@@ -1,4 +1,4 @@
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/presentation/auth/google_auth/google_auth_bloc.dart';
 import 'package:anonka/presentation/auth/google_auth/google_auth_state.dart';
 import 'package:anonka/presentation/home/home_screen.dart';

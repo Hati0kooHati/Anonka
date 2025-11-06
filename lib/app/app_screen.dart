@@ -1,6 +1,6 @@
 import 'package:anonka/app/app_bloc.dart';
 import 'package:anonka/app/app_state.dart';
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/presentation/auth/google_auth/google_auth_screen.dart';
 import 'package:anonka/presentation/home/home_screen.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
@@ -29,11 +29,11 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.95),
+            color: Colors.white.withAlpha(20),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha(200),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -46,7 +46,7 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blueAccent.withOpacity(0.1),
+                  color: Colors.blueAccent.withAlpha(200),
                 ),
                 child: const Icon(
                   Icons.system_update,

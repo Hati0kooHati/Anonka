@@ -1,4 +1,4 @@
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,18 +20,16 @@ class AddPostBloc extends Cubit<AddPostState> {
   })?
   showSnackBar;
 
-  void publish({
-    required TextEditingController textController,
-    required Function onSuccess,
-  }) async {
-    final String text = textController.text.trim();
-
+  void publish({required String text, required Function onSuccess}) async {
     if (_firebaseAuth?.currentUser?.email == null ||
         state.isLoading ||
-        text.isEmpty)
+        text.trim().isEmpty) {
       return;
+    }
 
-    if (text.length < 5) {
+    final textLength = text.characters.length;
+
+    if (textLength < 5) {
       showSnackBar?.call(
         content: Text(AppStrings.shortTextLength),
         color: Colors.yellow,
@@ -41,7 +39,7 @@ class AddPostBloc extends Cubit<AddPostState> {
       return;
     }
 
-    if (text.length > 2000) {
+    if (textLength > 2000) {
       showSnackBar?.call(
         content: Text(AppStrings.longTextLength),
         color: Colors.yellow,
@@ -54,8 +52,6 @@ class AddPostBloc extends Cubit<AddPostState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      final text = textController.text;
-
       await _firestore.collection('mukr_west_college').add({
         'userGmail': _firebaseAuth!.currentUser!.email,
         'createdAt': FieldValue.serverTimestamp(),
@@ -72,7 +68,6 @@ class AddPostBloc extends Cubit<AddPostState> {
 
       await Future.delayed(Duration(milliseconds: 1300));
       onSuccess();
-      textController.clear();
     } catch (e) {
       showSnackBar?.call(
         content: Text("Произошла ошибка ⚠️"),

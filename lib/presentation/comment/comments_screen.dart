@@ -1,4 +1,4 @@
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/core/helpers/error_handler.dart';
 import 'package:anonka/injection/inject.dart';
 import 'package:anonka/models/comment.dart';

@@ -1,4 +1,4 @@
-import 'package:anonka/constants.dart';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/models/post.dart';
 import 'package:anonka/presentation/posts/posts_bloc.dart';
 import 'package:flutter/material.dart';
