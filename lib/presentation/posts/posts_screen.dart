@@ -14,14 +14,22 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
   @override
   void initState() {
     super.initState();
+    bloc.loadInitial(onFailed: onFailed);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.showError = (e) {
-        ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
-      };
+  void onFailed(dynamic e) {
+    ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
+  }
 
-      bloc.loadInitial();
-    });
+  bool onScrollNotification(ScrollEndNotification scrollInfo) {
+    final isAtBottom =
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+
+    if (isAtBottom && !state.isLoading) {
+      bloc.loadMore(onFailed: onFailed);
+    }
+
+    return false;
   }
 
   void showCommentsSheet(Post post) {
@@ -90,9 +98,9 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
       color: Colors.purple,
       backgroundColor: Colors.white,
       elevation: 0,
-      onRefresh: bloc.refresh,
+      onRefresh: () => bloc.refresh(onFailed: onFailed),
       child: NotificationListener<ScrollEndNotification>(
-        onNotification: bloc.onScrollNotification,
+        onNotification: onScrollNotification,
         child: mainContent,
       ),
     );

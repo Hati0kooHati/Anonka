@@ -15,12 +15,14 @@ class CommentsBloc extends Cubit<CommentsState> {
   CommentsBloc(@factoryParam this.postId, this._firestore, this._firebaseAuth)
     : super(CommentsState());
 
-  Function(dynamic e)? showError;
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
   static const int pageSize = 5;
 
-  void loadInitial() async {
+  void loadInitial({
+    required Function onSuccess,
+    required Function(dynamic e) onFailed,
+  }) async {
     try {
       if (state.isLoading) return;
 
@@ -42,25 +44,20 @@ class CommentsBloc extends Cubit<CommentsState> {
 
       _hasMore = comments.length == pageSize;
       emit(state.copyWith(comments: comments, isLoading: false));
+
+      onSuccess();
     } catch (e) {
       emit(state.copyWith(isLoading: false));
       debugPrint("CommentsBloc loadInitial - $e");
-      showError?.call(e);
+
+      onFailed(e);
     }
   }
 
-  bool onScrollNotification(ScrollEndNotification scrollInfo) {
-    final isAtBottom =
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
-
-    if (isAtBottom && !state.isLoading) {
-      loadMore();
-    }
-
-    return false;
-  }
-
-  void loadMore() async {
+  void loadMore({
+    required Function onSuccess,
+    required Function(dynamic e) onFailed,
+  }) async {
     if (state.isLoading || _lastDoc == null || !_hasMore) return;
 
     try {
@@ -86,22 +83,31 @@ class CommentsBloc extends Cubit<CommentsState> {
           isLoading: false,
         ),
       );
+
+      onSuccess();
     } catch (e) {
       emit(state.copyWith(isLoading: false));
       debugPrint("CommentsBloc loadMore - $e");
-      showError?.call(e);
+      onFailed(e);
     }
   }
 
-  Future<void> refresh() async {
+  Future<void> refresh({
+    required Function onSuccess,
+    required Function(dynamic e) onFailed,
+  }) async {
     if (state.isLoading) return;
 
     _clear();
 
-    loadInitial();
+    loadInitial(onSuccess: onSuccess, onFailed: onFailed);
   }
 
-  void sendComment({required String text}) {
+  void sendComment({
+    required String text,
+    required Function onSuccess,
+    required Function(dynamic e) onFailed,
+  }) {
     final String? userEmail = _firebaseAuth.currentUser?.email;
 
     if (userEmail == null || text.trim().isEmpty) return;
@@ -127,8 +133,11 @@ class CommentsBloc extends Cubit<CommentsState> {
           });
 
       emit(state.copyWith(comments: newComments));
+
+      onSuccess();
     } catch (e) {
-      showError?.call(e);
+      debugPrint("CommentsBloc sendComment - $e");
+      onFailed(e);
     }
   }
 

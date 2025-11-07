@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:anonka/core/constants.dart';
 import 'package:anonka/widgets/custom_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,43 +11,28 @@ class ErrorHandler {
     required BuildContext context,
   }) {
     debugPrint('_ErrorHandler_');
+    debugPrint('error: $e');
     String text = 'Ошибка. Попробуйте позже';
 
-    if (e is SocketException) {
-      debugPrint('_SocketException_: ${e.toString()}');
-      text =
-          'Проблема с подключением к серверу. Проверьте интернет-соединение или повторите попытку позже.';
-    } else if (e is FirebaseAuthException) {
+    if (e is FirebaseAuthException) {
       switch (e.code) {
         case 'invalid-credential':
-          text = 'Неверные учетные данные.';
+          text = AppStrings.invalidCredential;
           break;
         case 'user-disabled':
-          text = 'Ты заблокирован.';
+          text = AppStrings.userDisabled;
           break;
         case 'network-request-failed':
-          text = 'Проблемы с интернетом';
+          text = AppStrings.networkRequestFailed;
           break;
         case 'app-not-authorized':
-          text = 'Я сам хз';
+          text = AppStrings.appNotAuthorized;
           break;
         case 'too-many-requests':
-          text = 'Ты заспамил. Попробуй позже';
+          text = AppStrings.tooManyRequests;
           break;
         default:
-          text = 'Неизвестная ошибка ${e.code} — ${e.message}';
-      }
-    } else {
-      debugPrint('error type : $e');
-      String message = e.toString();
-      if (message.contains('Failed host lookup')) {
-        text = 'Проблема с сервером или с доступом в интернет';
-      } else if (message.contains('Connection refused')) {
-        text = 'В соединении отказано';
-      } else if (message.contains('Cannot query field')) {
-        text = 'Ошибка при чтении поля';
-      } else {
-        text = message;
+          text = AppStrings.unknownError;
       }
     }
 

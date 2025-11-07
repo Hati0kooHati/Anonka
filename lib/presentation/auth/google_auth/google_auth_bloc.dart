@@ -1,5 +1,5 @@
 import 'package:anonka/presentation/auth/google_auth/google_auth_state.dart';
-import 'package:anonka/repository/auth_repository.dart';
+import 'package:anonka/core/repository/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 

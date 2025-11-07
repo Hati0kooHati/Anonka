@@ -4,6 +4,7 @@ import 'package:anonka/injection/inject.dart';
 import 'package:anonka/models/comment.dart';
 import 'package:anonka/presentation/comment/comments_bloc.dart';
 import 'package:anonka/presentation/comment/comments_state.dart';
+import 'package:anonka/widgets/custom_snack_bar.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,29 +14,54 @@ class CommentsScreen extends StateblocWidget<CommentsBloc, CommentsState> {
   CommentsScreen({super.key, required this.commentId})
     : super(createBloc: (context) => get<CommentsBloc>(param1: commentId));
 
-  final TextEditingController _commentController = TextEditingController();
+  final TextEditingController _commentTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.loadInitial();
-      bloc.showError = (dynamic e) {
-        ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
-      };
-    });
+    bloc.loadInitial(onSuccess: onSuccess, onFailed: onFailed);
   }
 
   @override
   void dispose() {
-    _commentController.dispose();
+    _commentTextController.dispose();
     super.dispose();
   }
 
+  void onSuccess() {
+    _commentTextController.clear();
+  }
+
+  void onFailed(dynamic e) {
+    ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
+  }
+
   void sendComment() {
-    bloc.sendComment(text: _commentController.text);
-    _commentController.clear();
+    final String text = _commentTextController.text;
+    final int textLength = text.characters.length;
+
+    if (textLength > 2000) {
+      CustomSnackBar.showSnackBar(
+        context,
+        content: Text(AppStrings.longTextWarning),
+        backgroundColor: Colors.yellow,
+        duration: Duration(seconds: 3),
+      );
+    }
+
+    bloc.sendComment(text: text, onSuccess: onSuccess, onFailed: onFailed);
+  }
+
+  bool onScrollNotification(ScrollEndNotification scrollInfo) {
+    final isAtBottom =
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+
+    if (isAtBottom && !state.isLoading) {
+      bloc.loadMore(onSuccess: onSuccess, onFailed: onFailed);
+    }
+
+    return false;
   }
 
   @override
@@ -128,9 +154,12 @@ class CommentsScreen extends StateblocWidget<CommentsBloc, CommentsState> {
                       color: Colors.purple,
                       backgroundColor: Colors.white,
                       elevation: 0,
-                      onRefresh: bloc.refresh,
+                      onRefresh: () => bloc.refresh(
+                        onSuccess: onSuccess,
+                        onFailed: onFailed,
+                      ),
                       child: NotificationListener<ScrollEndNotification>(
-                        onNotification: bloc.onScrollNotification,
+                        onNotification: onScrollNotification,
                         child: mainContent(scrollController),
                       ),
                     ),
@@ -196,7 +225,7 @@ class CommentsScreen extends StateblocWidget<CommentsBloc, CommentsState> {
                 ],
               ),
               child: TextField(
-                controller: _commentController,
+                controller: _commentTextController,
                 keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
                 minLines: 1,

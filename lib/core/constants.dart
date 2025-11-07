@@ -21,6 +21,13 @@ class AppStrings {
   static const publish = "Опубликовать";
   static const yourAccount = "Твой аккаунт";
   static const noComments = "Нет комментариев...";
-  static const shortTextLength = "Слишком мало";
-  static const longTextLength = "Пиши поменьше";
+  static const shortTextWarning = "Слишком мало";
+  static const longTextWarning = "Пиши поменьше";
+
+  static const networkRequestFailed = "Проблемы с интернетом";
+  static const invalidCredential = "Неверные учетные данные";
+  static const userDisabled = "Ты заблокирован";
+  static const appNotAuthorized = "Попробуйте позже";
+  static const tooManyRequests = "Попробуй позже";
+  static const unknownError = "Неизвестная ошибка";
 }

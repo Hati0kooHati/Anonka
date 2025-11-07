@@ -1,4 +1,3 @@
-import 'package:anonka/core/constants.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,39 +12,12 @@ class AddPostBloc extends Cubit<AddPostState> {
 
   AddPostBloc(this._firestore, this._firebaseAuth) : super(AddPostState());
 
-  Function({
-    required Widget content,
-    required Color color,
-    required Duration duration,
-  })?
-  showSnackBar;
-
-  void publish({required String text, required Function onSuccess}) async {
-    if (_firebaseAuth?.currentUser?.email == null ||
-        state.isLoading ||
-        text.trim().isEmpty) {
-      return;
-    }
-
-    final textLength = text.characters.length;
-
-    if (textLength < 5) {
-      showSnackBar?.call(
-        content: Text(AppStrings.shortTextLength),
-        color: Colors.yellow,
-        duration: Duration(seconds: 3),
-      );
-
-      return;
-    }
-
-    if (textLength > 2000) {
-      showSnackBar?.call(
-        content: Text(AppStrings.longTextLength),
-        color: Colors.yellow,
-        duration: Duration(seconds: 3),
-      );
-
+  void publish({
+    required String text,
+    required Function onSuccess,
+    required Function(dynamic e) onFailed,
+  }) async {
+    if (_firebaseAuth?.currentUser?.email == null || state.isLoading) {
       return;
     }
 
@@ -60,20 +32,11 @@ class AddPostBloc extends Cubit<AddPostState> {
         'dislikes': [],
       });
 
-      showSnackBar?.call(
-        content: Text("Опубликовано! 🚀"),
-        color: Colors.green,
-        duration: Duration(milliseconds: 600),
-      );
-
       await Future.delayed(Duration(milliseconds: 1300));
       onSuccess();
     } catch (e) {
-      showSnackBar?.call(
-        content: Text("Произошла ошибка ⚠️"),
-        color: Colors.red,
-        duration: Duration(seconds: 3),
-      );
+      debugPrint("AddPostBloc publish - $e");
+      onFailed(e);
     } finally {
       emit(state.copyWith(isLoading: false));
     }

@@ -13,31 +13,19 @@ class PostsBloc extends Cubit<PostsState> {
 
   PostsBloc(this._firestore, this._firebaseAuth) : super(PostsState());
 
-  Function(dynamic e)? showError;
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
   static const int pageSize = 5;
 
-  bool onScrollNotification(ScrollEndNotification scrollInfo) {
-    final isAtBottom =
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
-
-    if (isAtBottom && !state.isLoading) {
-      loadMore();
-    }
-
-    return false;
-  }
-
-  Future<void> refresh() async {
+  Future<void> refresh({required Function(dynamic e) onFailed}) async {
     if (state.isLoading) return;
 
     clear();
 
-    loadInitial();
+    loadInitial(onFailed: onFailed);
   }
 
-  Future<void> loadInitial() async {
+  Future<void> loadInitial({required Function(dynamic e) onFailed}) async {
     emit(state.copyWith(isLoading: true));
 
     try {
@@ -58,11 +46,12 @@ class PostsBloc extends Cubit<PostsState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false));
       debugPrint("PostsBloc loadInitial - $e");
-      showError?.call(e);
+
+      onFailed(e);
     }
   }
 
-  void loadMore() async {
+  void loadMore({required Function(dynamic e) onFailed}) async {
     if (!_hasMore || state.isLoading || _lastDoc == null) return;
 
     emit(state.copyWith(isLoading: true));
@@ -84,7 +73,8 @@ class PostsBloc extends Cubit<PostsState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false));
       debugPrint("PostsBloc loadMore - $e");
-      showError?.call(e);
+
+      onFailed(e);
     }
   }
 
@@ -122,7 +112,7 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: newPosts));
     } catch (e) {
-      showError?.call(e);
+      debugPrint("PostsBloc toggleLike - e");
     }
   }
 
@@ -158,7 +148,7 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: newPosts));
     } catch (e) {
-      showError?.call(e);
+      debugPrint("PostsBloc toggleDislike - e");
     }
   }
 

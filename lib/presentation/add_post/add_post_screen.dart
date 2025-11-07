@@ -1,4 +1,5 @@
 import 'package:anonka/core/constants.dart';
+import 'package:anonka/core/helpers/error_handler.dart';
 import 'package:anonka/presentation/add_post/add_post_bloc.dart';
 import 'package:anonka/presentation/add_post/add_post_state.dart';
 import 'package:anonka/widgets/custom_app_bar.dart';
@@ -9,37 +10,47 @@ import 'package:flutter/material.dart';
 class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
   AddPostScreen({super.key});
 
-  final TextEditingController _postInputController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.showSnackBar =
-          ({
-            required Widget content,
-            required Color color,
-            required Duration duration,
-          }) {
-            CustomSnackBar.showSnackBar(
-              context,
-              content: content,
-              backgroundColor: color,
-              duration: duration,
-            );
-          };
-    });
-  }
+  final TextEditingController _postTextController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
-    _postInputController.dispose();
+    _postTextController.dispose();
   }
 
   void onSuccess() {
     Navigator.pop(context);
+  }
+
+  void onFailed(dynamic e) {
+    ErrorHandler.showSnackbarErrorMessage(e: e, context: context);
+  }
+
+  void publish() {
+    final String text = _postTextController.text;
+    final int textLength = text.characters.length;
+
+    if (textLength < 5) {
+      CustomSnackBar.showSnackBar(
+        context,
+        content: Text(AppStrings.shortTextWarning),
+        backgroundColor: Colors.yellow,
+        duration: Duration(seconds: 3),
+      );
+
+      return;
+    }
+
+    if (textLength > 2000) {
+      CustomSnackBar.showSnackBar(
+        context,
+        content: Text(AppStrings.longTextWarning),
+        backgroundColor: Colors.yellow,
+        duration: Duration(seconds: 3),
+      );
+    }
+
+    bloc.publish(text: text, onSuccess: onSuccess, onFailed: onFailed);
   }
 
   @override
@@ -85,7 +96,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
           ],
         ),
         child: TextField(
-          controller: _postInputController,
+          controller: _postTextController,
           maxLines: null,
           expands: true,
           textAlignVertical: TextAlignVertical.top,
@@ -106,8 +117,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
 
   Widget _buildSubmitButton() {
     return GestureDetector(
-      onTap: () =>
-          bloc.publish(text: _postInputController.text, onSuccess: onSuccess),
+      onTap: publish,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 12),
