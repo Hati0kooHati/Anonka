@@ -1,10 +1,8 @@
 import 'package:anonka/app/app_bloc.dart';
 import 'package:anonka/app/app_state.dart';
 import 'package:anonka/core/constants.dart';
-import 'package:anonka/presentation/auth/google_auth/google_auth_screen.dart';
-import 'package:anonka/presentation/home/home_screen.dart';
+import 'package:anonka/presentation/auth/widgets/auth_gate_widget.dart';
 import 'package:anonka/widgets/statebloc_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppScreen extends StateblocWidget<AppBloc, AppState> {
@@ -15,9 +13,7 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: state.shouldShowUpdateScreen
-          ? _showUpdateApp()
-          : _getStartupScreen(),
+      home: state.shouldShowUpdateScreen ? _showUpdateApp() : AuthGateWidget(),
     );
   }
 
@@ -102,13 +98,5 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
         ),
       ),
     );
-  }
-
-  Widget _getStartupScreen() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      return HomeScreen();
-    } else {
-      return GoogleAuthScreen();
-    }
   }
 }
