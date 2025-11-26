@@ -5,7 +5,7 @@ import 'package:anonka/src/feature/comment/comments_screen.dart';
 import 'package:anonka/src/feature/posts/posts_bloc.dart';
 import 'package:anonka/src/feature/posts/posts_state.dart';
 import 'package:anonka/src/feature/posts/widgets/post_widget.dart';
-import 'package:anonka/src/widgets/statebloc_widget.dart';
+import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
 class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {

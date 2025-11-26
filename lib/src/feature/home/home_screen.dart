@@ -4,8 +4,8 @@ import 'package:anonka/src/feature/home/home_bloc.dart';
 import 'package:anonka/src/feature/home/home_state.dart';
 import 'package:anonka/src/feature/posts/posts_screen.dart';
 import 'package:anonka/src/feature/profile/profile_screen.dart';
-import 'package:anonka/src/widgets/custom_app_bar.dart';
-import 'package:anonka/src/widgets/statebloc_widget.dart';
+import 'package:anonka/src/core/widgets/custom_app_bar.dart';
+import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StateblocWidget<HomeBloc, HomeState> {

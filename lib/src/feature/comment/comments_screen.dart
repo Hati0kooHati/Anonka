@@ -4,8 +4,8 @@ import 'package:anonka/src/core/injection/inject.dart';
 import 'package:anonka/src/core/model/comment.dart';
 import 'package:anonka/src/feature/comment/comments_bloc.dart';
 import 'package:anonka/src/feature/comment/comments_state.dart';
-import 'package:anonka/src/widgets/custom_snack_bar.dart';
-import 'package:anonka/src/widgets/statebloc_widget.dart';
+import 'package:anonka/src/core/widgets/custom_snack_bar.dart';
+import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
 class CommentsScreen extends StateblocWidget<CommentsBloc, CommentsState> {
