@@ -1,5 +1,5 @@
 import 'package:anonka/src/core/app/app_screen.dart';
-import 'package:anonka/src/firebase_options.dart';
+import 'package:anonka/firebase_options.dart';
 import 'package:anonka/src/core/injection/inject.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
