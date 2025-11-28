@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:anonka/src/core/app/app_state.dart';
+import 'package:anonka/src/feature/app/app_state.dart';
 import 'package:anonka/src/core/constants.dart';
 import 'package:anonka/src/core/helpers/error_handler.dart';
 import 'package:anonka/src/core/service/firebase_remote_config_service.dart';

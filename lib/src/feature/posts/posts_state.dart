@@ -1,4 +1,4 @@
-import 'package:anonka/src/core/model/post.dart';
+import 'package:anonka/src/feature/add_post/model/post.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'posts_state.freezed.dart';
 

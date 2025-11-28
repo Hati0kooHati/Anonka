@@ -1,13 +1,13 @@
 import 'package:anonka/src/core/constants.dart';
 import 'package:anonka/src/core/helpers/error_handler.dart';
-import 'package:anonka/src/feature/add_post/add_post_bloc.dart';
-import 'package:anonka/src/feature/add_post/add_post_state.dart';
+import 'package:anonka/src/feature/add_post/cubit/add_post_cubit.dart';
+import 'package:anonka/src/feature/add_post/cubit/add_post_state.dart';
 import 'package:anonka/src/core/widgets/custom_app_bar.dart';
 import 'package:anonka/src/core/widgets/custom_snack_bar.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
-class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
+class AddPostScreen extends StateblocWidget<AddPostCubit, AddPostState> {
   AddPostScreen({super.key});
 
   final TextEditingController _postTextController = TextEditingController();
@@ -50,7 +50,7 @@ class AddPostScreen extends StateblocWidget<AddPostBloc, AddPostState> {
       );
     }
 
-    bloc.publish(text: text, onSuccess: onSuccess, onFailed: onFailed);
+    bloc.addPost(text: text, onSuccess: onSuccess, onFailed: onFailed);
   }
 
   @override

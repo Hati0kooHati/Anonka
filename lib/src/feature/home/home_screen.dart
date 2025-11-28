@@ -1,5 +1,5 @@
 import 'package:anonka/src/core/constants.dart';
-import 'package:anonka/src/feature/add_post/add_post_screen.dart';
+import 'package:anonka/src/feature/add_post/ui/screen/add_post_screen.dart';
 import 'package:anonka/src/feature/home/home_bloc.dart';
 import 'package:anonka/src/feature/home/home_state.dart';
 import 'package:anonka/src/feature/posts/posts_screen.dart';

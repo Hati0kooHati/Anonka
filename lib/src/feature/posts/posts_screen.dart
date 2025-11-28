@@ -1,6 +1,6 @@
 import 'package:anonka/src/core/constants.dart';
 import 'package:anonka/src/core/helpers/error_handler.dart';
-import 'package:anonka/src/core/model/post.dart';
+import 'package:anonka/src/feature/add_post/model/post.dart';
 import 'package:anonka/src/feature/comment/comments_screen.dart';
 import 'package:anonka/src/feature/posts/posts_bloc.dart';
 import 'package:anonka/src/feature/posts/posts_state.dart';

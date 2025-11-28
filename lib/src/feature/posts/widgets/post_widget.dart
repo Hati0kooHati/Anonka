@@ -1,5 +1,5 @@
 import 'package:anonka/src/core/constants.dart';
-import 'package:anonka/src/core/model/post.dart';
+import 'package:anonka/src/feature/add_post/model/post.dart';
 import 'package:anonka/src/feature/posts/posts_bloc.dart';
 import 'package:flutter/material.dart';
 

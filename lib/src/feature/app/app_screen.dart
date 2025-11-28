@@ -1,5 +1,5 @@
-import 'package:anonka/src/core/app/app_bloc.dart';
-import 'package:anonka/src/core/app/app_state.dart';
+import 'package:anonka/src/feature/app/app_bloc.dart';
+import 'package:anonka/src/feature/app/app_state.dart';
 import 'package:anonka/src/core/constants.dart';
 import 'package:anonka/src/feature/auth/widgets/auth_gate_widget.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';

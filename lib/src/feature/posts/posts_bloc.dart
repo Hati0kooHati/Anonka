@@ -1,4 +1,4 @@
-import 'package:anonka/src/core/model/post.dart';
+import 'package:anonka/src/feature/add_post/model/post.dart';
 import 'package:anonka/src/feature/posts/posts_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
