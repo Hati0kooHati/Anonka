@@ -1,5 +1,5 @@
 import 'package:anonka/src/core/model/comment.dart';
-import 'package:anonka/src/feature/comment/comments_state.dart';
+import 'package:anonka/src/feature/posts/comment/comments_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

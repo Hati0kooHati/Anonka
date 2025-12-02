@@ -11,19 +11,19 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:anonka/src/core/helpers/error_handler.dart' as _i707;
 import 'package:anonka/src/core/injection/register_module.dart' as _i796;
-import 'package:anonka/src/core/service/auth_service.dart' as _i60;
-import 'package:anonka/src/core/service/firebase_remote_config_service.dart'
-    as _i791;
 import 'package:anonka/src/feature/add_post/cubit/add_post_cubit.dart' as _i908;
 import 'package:anonka/src/feature/add_post/data/add_post_data_source.dart'
     as _i411;
 import 'package:anonka/src/feature/add_post/data/add_post_repository.dart'
     as _i699;
-import 'package:anonka/src/feature/app/app_bloc.dart' as _i602;
-import 'package:anonka/src/feature/auth/google_auth/google_auth_bloc.dart'
-    as _i746;
-import 'package:anonka/src/feature/comment/comments_bloc.dart' as _i408;
-import 'package:anonka/src/feature/home/home_bloc.dart' as _i734;
+import 'package:anonka/src/feature/app/cubit/app_cubit.dart' as _i311;
+import 'package:anonka/src/feature/app/data/firebase_remote_config_service.dart'
+    as _i712;
+import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_bloc.dart'
+    as _i759;
+import 'package:anonka/src/feature/auth/google_auth/data/auth_service.dart'
+    as _i768;
+import 'package:anonka/src/feature/posts/comment/comments_bloc.dart' as _i251;
 import 'package:anonka/src/feature/posts/posts_bloc.dart' as _i932;
 import 'package:anonka/src/feature/profile/profile_bloc.dart' as _i674;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
@@ -41,7 +41,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
     gh.factory<_i707.ErrorHandler>(() => _i707.ErrorHandler());
-    await gh.factoryAsync<_i791.FirebaseRemoteConfigService>(
+    await gh.factoryAsync<_i712.FirebaseRemoteConfigService>(
       () => registerModule.firebaseRemoteConfig(),
       preResolve: true,
     );
@@ -49,23 +49,17 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.packageInfo(),
       preResolve: true,
     );
-    gh.factory<_i60.AuthService>(() => _i60.AuthService());
-    gh.factory<_i734.HomeBloc>(() => _i734.HomeBloc());
     gh.factory<_i674.ProfileBloc>(() => _i674.ProfileBloc());
-    gh.singleton<_i59.FirebaseAuth>(() => registerModule.user);
+    await gh.factoryAsync<_i768.AuthService>(() {
+      final i = _i768.AuthService();
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.singleton<_i974.FirebaseFirestore>(() => registerModule.firestore);
-    gh.factoryParam<_i408.CommentsBloc, String, dynamic>(
-      (postId, _) => _i408.CommentsBloc(
+    gh.factoryParam<_i251.CommentsBloc, String, dynamic>(
+      (postId, _) => _i251.CommentsBloc(
         postId,
         gh<_i974.FirebaseFirestore>(),
         gh<_i59.FirebaseAuth>(),
-      ),
-    );
-    gh.factory<_i602.AppBloc>(
-      () => _i602.AppBloc(
-        gh<_i791.FirebaseRemoteConfigService>(),
-        gh<_i655.PackageInfo>(),
-        gh<_i707.ErrorHandler>(),
       ),
     );
     gh.factory<_i932.PostsBloc>(
@@ -77,8 +71,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i411.AddPostDataSource>(
       () => _i411.AddPostDataSource(gh<_i974.FirebaseFirestore>()),
     );
-    gh.factory<_i746.GoogleAuthBloc>(
-      () => _i746.GoogleAuthBloc(gh<_i60.AuthService>()),
+    gh.factory<_i311.AppBloc>(
+      () => _i311.AppBloc(
+        gh<_i712.FirebaseRemoteConfigService>(),
+        gh<_i655.PackageInfo>(),
+      ),
+    );
+    gh.factory<_i759.GoogleAuthCubit>(
+      () => _i759.GoogleAuthCubit(gh<_i768.AuthService>()),
     );
     gh.factory<_i699.AddPostRepository>(
       () => _i699.AddPostRepository(gh<_i411.AddPostDataSource>()),

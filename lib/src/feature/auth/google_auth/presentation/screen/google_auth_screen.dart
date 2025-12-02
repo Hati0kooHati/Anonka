@@ -1,37 +1,39 @@
-import 'package:anonka/src/core/constants.dart';
-import 'package:anonka/src/feature/auth/google_auth/google_auth_bloc.dart';
-import 'package:anonka/src/feature/auth/google_auth/google_auth_state.dart';
-import 'package:anonka/src/feature/home/home_screen.dart';
+import 'package:anonka/src/core/constants/constants.dart';
+import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_bloc.dart';
+import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_state.dart';
+import 'package:anonka/src/feature/tabs_screen/tabs_screen.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
 class GoogleAuthScreen
-    extends StateblocWidget<GoogleAuthBloc, GoogleAuthState> {
+    extends StateblocWidget<GoogleAuthCubit, GoogleAuthState> {
   GoogleAuthScreen({super.key});
 
   void onSuccess() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => HomeScreen()),
+      MaterialPageRoute(builder: (_) => TabsScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildWelcomeTextSection(),
-          const SizedBox(height: 90),
-          _buildGoogleSignInButton(
-            bloc: bloc,
-            isLoading: state.isLoading,
-            onSuccess: onSuccess,
-            size: size,
-          ),
-        ],
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildWelcomeTextSection(),
+            const SizedBox(height: 90),
+            _buildGoogleSignInButton(
+              bloc: bloc,
+              isLoading: state.isLoading,
+              onSuccess: onSuccess,
+              size: size,
+            ),
+          ],
+        ),
       ),
     );
   }

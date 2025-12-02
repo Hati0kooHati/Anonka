@@ -1,6 +1,6 @@
 import 'package:anonka/src/feature/add_post/cubit/add_post_state.dart';
 import 'package:anonka/src/feature/add_post/data/add_post_repository.dart';
-import 'package:anonka/src/feature/add_post/model/post.dart';
+import 'package:anonka/src/feature/add_post/model/add_post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +29,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     try {
       await addPostRepository.addPost(
-        post: Post(text: text, likes: [], dislikes: []),
-        userGmail: userGmail,
+        addPost: AddPost(userGmail: userGmail, text: text),
       );
 
       onSuccess();

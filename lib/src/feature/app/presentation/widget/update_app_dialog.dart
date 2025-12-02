@@ -1,23 +1,13 @@
-import 'package:anonka/src/feature/app/app_bloc.dart';
-import 'package:anonka/src/feature/app/app_state.dart';
-import 'package:anonka/src/core/constants.dart';
-import 'package:anonka/src/feature/auth/widgets/auth_gate_widget.dart';
-import 'package:anonka/src/core/widgets/statebloc_widget.dart';
+import 'package:anonka/src/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-class AppScreen extends StateblocWidget<AppBloc, AppState> {
-  AppScreen({super.key});
+class UpdateAppDialog extends StatelessWidget {
+  const UpdateAppDialog({super.key, required this.launchUpdateUrl});
+
+  final Function() launchUpdateUrl;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: state.shouldShowUpdateScreen ? _showUpdateApp() : AuthGateWidget(),
-    );
-  }
-
-  Widget _showUpdateApp() {
     return Scaffold(
       body: Dialog(
         backgroundColor: Colors.transparent,
@@ -70,7 +60,7 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: bloc.launchUpdateUrl,
+                    onPressed: launchUpdateUrl,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurple,
                       foregroundColor: Colors.white,

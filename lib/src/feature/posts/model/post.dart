@@ -2,16 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
   Post({
-    String? id,
-    String? text,
-    DateTime? createdAt,
-    List<String>? likes,
-    List<String>? dislikes,
-  }) : id = id ?? "",
-       text = text ?? "",
-       createdAt = createdAt ?? DateTime.now(),
-       likes = likes ?? [],
-       dislikes = dislikes ?? [];
+    required this.id,
+    required this.text,
+    required this.createdAt,
+    required this.likes,
+    required this.dislikes,
+  });
 
   final String id;
   final String text;

@@ -1,4 +1,4 @@
-import 'package:anonka/src/core/constants.dart';
+import 'package:anonka/src/core/constants/constants.dart';
 import 'package:anonka/src/core/helpers/error_handler.dart';
 import 'package:anonka/src/feature/add_post/cubit/add_post_cubit.dart';
 import 'package:anonka/src/feature/add_post/cubit/add_post_state.dart';

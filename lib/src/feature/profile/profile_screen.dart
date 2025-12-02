@@ -1,4 +1,4 @@
-import 'package:anonka/src/core/constants.dart';
+import 'package:anonka/src/core/constants/constants.dart';
 import 'package:anonka/src/feature/profile/profile_bloc.dart';
 import 'package:anonka/src/feature/profile/profile_state.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';

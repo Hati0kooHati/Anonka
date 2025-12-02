@@ -1,4 +1,4 @@
-import 'package:anonka/src/core/constants.dart';
+import 'package:anonka/src/core/constants/constants.dart';
 import 'package:anonka/src/core/widgets/custom_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

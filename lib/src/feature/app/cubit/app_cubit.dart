@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:anonka/src/feature/app/app_state.dart';
-import 'package:anonka/src/core/constants.dart';
-import 'package:anonka/src/core/helpers/error_handler.dart';
-import 'package:anonka/src/core/service/firebase_remote_config_service.dart';
+import 'package:anonka/src/feature/app/cubit/app_state.dart';
+import 'package:anonka/src/core/constants/constants.dart';
+import 'package:anonka/src/feature/app/data/firebase_remote_config_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -13,9 +12,8 @@ import 'package:url_launcher/url_launcher.dart';
 class AppBloc extends Cubit<AppState> {
   final FirebaseRemoteConfigService firebaseRemoteConfigService;
   final PackageInfo packageInfo;
-  final ErrorHandler errorHandler;
 
-  AppBloc(this.firebaseRemoteConfigService, this.packageInfo, this.errorHandler)
+  AppBloc(this.firebaseRemoteConfigService, this.packageInfo)
     : super(AppState()) {
     checkForUpdates();
   }
