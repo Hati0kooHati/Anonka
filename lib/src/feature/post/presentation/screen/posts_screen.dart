@@ -1,14 +1,14 @@
 import 'package:anonka/src/core/constants/constants.dart';
 import 'package:anonka/src/core/helpers/error_handler.dart';
-import 'package:anonka/src/feature/posts/model/post.dart';
-import 'package:anonka/src/feature/posts/comment/comments_screen.dart';
-import 'package:anonka/src/feature/posts/posts_bloc.dart';
-import 'package:anonka/src/feature/posts/posts_state.dart';
-import 'package:anonka/src/feature/posts/widgets/post_widget.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
+import 'package:anonka/src/feature/post/comment/comments_screen.dart';
+import 'package:anonka/src/feature/post/cubit/posts_cubit.dart';
+import 'package:anonka/src/feature/post/cubit/posts_state.dart';
+import 'package:anonka/src/feature/post/presentation/widgets/post_widget.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';
 
-class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
+class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
   PostsScreen({super.key});
 
   @override
@@ -102,6 +102,31 @@ class PostsScreen extends StateblocWidget<PostsBloc, PostsState> {
       child: NotificationListener<ScrollEndNotification>(
         onNotification: onScrollNotification,
         child: mainContent,
+      ),
+    );
+  }
+
+  Widget _buildAddPostButton(
+    BuildContext context,
+    Function(BuildContext) goToAddPostScreen,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withAlpha(220),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(50),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        onPressed: () => goToAddPostScreen(context),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Icon(Icons.add, size: 32, color: Colors.purple[500]),
       ),
     );
   }

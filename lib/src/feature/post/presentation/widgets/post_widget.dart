@@ -1,11 +1,11 @@
 import 'package:anonka/src/core/constants/constants.dart';
-import 'package:anonka/src/feature/posts/model/post.dart';
-import 'package:anonka/src/feature/posts/posts_bloc.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
+import 'package:anonka/src/feature/post/cubit/posts_cubit.dart';
 import 'package:flutter/material.dart';
 
 class PostWidget extends StatelessWidget {
   final Post post;
-  final PostsBloc bloc;
+  final PostsCubit bloc;
   final Function(Post post) onCommentPressed;
 
   const PostWidget({

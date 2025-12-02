@@ -1,19 +1,18 @@
 import 'package:anonka/src/core/constants/constants.dart';
-import 'package:anonka/src/feature/profile/profile_bloc.dart';
-import 'package:anonka/src/feature/profile/profile_state.dart';
-import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
+class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
-  final email = FirebaseAuth.instance.currentUser?.email;
+  final String email =
+      FirebaseAuth.instance.currentUser?.email ??
+      (throw Exception(
+        "тут не должно быть null т.к в app/presentation/widgets/auth_gate_widget мы проверяем",
+      ));
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(color: Colors.black),
@@ -24,7 +23,6 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Profile Header
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(16),
@@ -65,7 +63,7 @@ class ProfileScreen extends StateblocWidget<ProfileBloc, ProfileState> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  email ?? 'Anonymous',
+                  email,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,

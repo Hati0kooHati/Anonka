@@ -1,21 +1,25 @@
-import 'package:anonka/src/feature/posts/model/post.dart';
-import 'package:anonka/src/feature/posts/posts_state.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
+import 'package:anonka/src/feature/post/cubit/posts_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class PostsBloc extends Cubit<PostsState> {
+class PostsCubit extends Cubit<PostsState> {
   final FirebaseFirestore _firestore;
-  final FirebaseAuth? _firebaseAuth;
 
-  PostsBloc(this._firestore, this._firebaseAuth) : super(PostsState());
+  PostsCubit(this._firestore, firebaseAuth)
+    : userEmail =
+          firebaseAuth.currentUser?.uid ??
+          "тут не должно быть null т.к в app/presentation/widgets/auth_gate_widget мы проверяем",
+      super(PostsState());
 
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
-  static const int pageSize = 5;
+  final int pageLimit = 5;
+
+  final String userEmail;
 
   Future<void> refresh({required Function(dynamic e) onFailed}) async {
     if (state.isLoading) return;
@@ -31,8 +35,8 @@ class PostsBloc extends Cubit<PostsState> {
     try {
       final snap = await _firestore
           .collection("mukr_west_college")
-          .orderBy("createdAt", descending: true)
-          .limit(pageSize)
+          .orderBy("created_at", descending: true)
+          .limit(pageLimit)
           .get();
       final posts = snap.docs.map((doc) => Post.fromDoc(doc)).toList();
 
@@ -42,10 +46,10 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: posts, isLoading: false));
 
-      _hasMore = posts.length == pageSize;
+      _hasMore = posts.length == pageLimit;
     } catch (e) {
       emit(state.copyWith(isLoading: false));
-      debugPrint("PostsBloc loadInitial - $e");
+      debugPrint("PostsCubit loadInitial - $e");
 
       onFailed(e);
     }
@@ -61,7 +65,7 @@ class PostsBloc extends Cubit<PostsState> {
           .collection("mukr_west_college")
           .orderBy("createdAt", descending: true)
           .startAfterDocument(_lastDoc!)
-          .limit(pageSize)
+          .limit(pageLimit)
           .get();
 
       final posts = snap.docs.map((doc) => Post.fromDoc(doc)).toList();
@@ -69,20 +73,16 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: [...state.posts, ...posts], isLoading: false));
 
-      _hasMore = posts.length == pageSize;
+      _hasMore = posts.length == pageLimit;
     } catch (e) {
       emit(state.copyWith(isLoading: false));
-      debugPrint("PostsBloc loadMore - $e");
+      debugPrint("PostsCubit loadMore - $e");
 
       onFailed(e);
     }
   }
 
   void toggleLike(Post post) {
-    final String? userEmail = _firebaseAuth?.currentUser?.email;
-
-    if (userEmail == null) return;
-
     try {
       final newPosts = [...state.posts];
 
@@ -112,15 +112,11 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: newPosts));
     } catch (e) {
-      debugPrint("PostsBloc toggleLike - e");
+      debugPrint("PostsCubit toggleLike - e");
     }
   }
 
   void toggleDislike(Post post) {
-    final String? userEmail = _firebaseAuth?.currentUser?.email;
-
-    if (userEmail == null) return;
-
     try {
       final newPosts = [...state.posts];
 
@@ -148,7 +144,7 @@ class PostsBloc extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: newPosts));
     } catch (e) {
-      debugPrint("PostsBloc toggleDislike - e");
+      debugPrint("PostsCubit toggleDislike - e");
     }
   }
 

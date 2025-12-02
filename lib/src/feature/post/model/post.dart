@@ -27,12 +27,14 @@ class Post {
     );
   }
 
-  // тут нету created_at т.к. я добавляю ее когда отправляю запрос
-  // в add_post_data_source.  FieldValue.serverTimestamp()
-
-  // нету также id т.к. оно генерируется на Firebase стороне
   Map<String, dynamic> toJson() {
-    return {"text": text, "likes": likes, "dislikes": dislikes};
+    return {
+      "id": id,
+      "text": text,
+      "createdAt": createdAt,
+      "likes": likes,
+      "dislikes": dislikes,
+    };
   }
 
   Post copyWith({
