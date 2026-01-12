@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:anonka/src/core/constants/app_strings.dart';
 import 'package:anonka/src/feature/app/cubit/app_state.dart';
 import 'package:anonka/src/core/constants/constants.dart';
 import 'package:anonka/src/feature/app/data/firebase_remote_config_service.dart';
@@ -21,15 +22,19 @@ class AppBloc extends Cubit<AppState> {
   Function(dynamic e)? showError;
 
   void checkForUpdates() async {
-    String minRequiredVersion = firebaseRemoteConfigService
-        .getMinRequiredVersion();
-    String currentVersion = packageInfo.version;
+    try {
+      String minRequiredVersion = firebaseRemoteConfigService
+          .getMinRequiredVersion();
+      String currentVersion = packageInfo.version;
 
-    debugPrint("minRequiredVersion - $minRequiredVersion");
-    debugPrint("currentVersion - $currentVersion");
+      debugPrint("minRequiredVersion - $minRequiredVersion");
+      debugPrint("currentVersion - $currentVersion");
 
-    if (minRequiredVersion != currentVersion) {
-      emit(state.copyWith(shouldShowUpdateScreen: true));
+      if (minRequiredVersion != currentVersion) {
+        emit(state.copyWith(shouldShowUpdateScreen: true));
+      }
+    } catch (e) {
+      emit(state.copyWith(error: Exception(AppStrings.tryLater)));
     }
   }
 
@@ -40,7 +45,11 @@ class AppBloc extends Cubit<AppState> {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
-      throw "Cannot launch url";
+      emit(state.copyWith(error: Exception(AppStrings.tryLater)));
     }
+  }
+
+  void clearError() {
+    emit(state.copyWith(error: null));
   }
 }

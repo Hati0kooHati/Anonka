@@ -5,36 +5,35 @@ class Post {
     required this.id,
     required this.text,
     required this.createdAt,
-    required this.likes,
-    required this.dislikes,
+    required this.isLiked,
+    required this.isDisliked,
+    required this.likesCount,
+    required this.dislikesCount,
   });
 
   final String id;
   final String text;
   final DateTime createdAt;
-  final List<String> likes;
-  final List<String> dislikes;
+  final bool isLiked;
+  final bool isDisliked;
+  final int likesCount;
+  final int dislikesCount;
 
-  factory Post.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+  factory Post.fromDoc({
+    required DocumentSnapshot<Map<String, dynamic>> doc,
+    required String userEmail,
+  }) {
     final data = doc.data()!;
     return Post(
       id: doc.id,
       text: data['text'] ?? '',
       createdAt: ((data['created_at'] ?? Timestamp.now()) as Timestamp)
           .toDate(),
-      likes: doc['likes'] ?? [],
-      dislikes: doc['dislikes'] ?? [],
+      isLiked: ((data['liked_users'] as List?) ?? []).contains(userEmail),
+      isDisliked: ((data['disliked_users'] as List?) ?? []).contains(userEmail),
+      likesCount: data['likes_count'],
+      dislikesCount: data['dislikes_count'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "text": text,
-      "createdAt": createdAt,
-      "likes": likes,
-      "dislikes": dislikes,
-    };
   }
 
   Post copyWith({
@@ -42,15 +41,19 @@ class Post {
     String? userGmail,
     String? text,
     DateTime? createdAt,
-    List<String>? likes,
-    List<String>? dislikes,
+    bool? isLiked,
+    bool? isDisliked,
+    int? likesCount,
+    int? dislikesCount,
   }) {
     return Post(
       id: id ?? this.id,
       text: text ?? this.text,
       createdAt: createdAt ?? this.createdAt,
-      likes: likes ?? this.likes,
-      dislikes: dislikes ?? this.dislikes,
+      isLiked: isLiked ?? this.isLiked,
+      isDisliked: isDisliked ?? this.isDisliked,
+      likesCount: likesCount ?? this.likesCount,
+      dislikesCount: dislikesCount ?? this.dislikesCount,
     );
   }
 }

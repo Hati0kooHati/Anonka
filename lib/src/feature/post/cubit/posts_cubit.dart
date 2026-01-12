@@ -1,44 +1,51 @@
+import 'package:anonka/src/feature/post/data/posts_repository.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:anonka/src/feature/post/cubit/posts_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class PostsCubit extends Cubit<PostsState> {
-  final FirebaseFirestore _firestore;
+  final PostsRepository postsRepository;
 
-  PostsCubit(this._firestore, firebaseAuth)
+  final String userEmail;
+
+  PostsCubit(this.postsRepository, FirebaseAuth firebaseAuth)
     : userEmail =
           firebaseAuth.currentUser?.uid ??
-          "тут не должно быть null т.к в app/presentation/widgets/auth_gate_widget мы проверяем",
+          (throw Error.throwWithStackTrace(
+            "тут не должно быть null т.к в app/presentation/widgets/auth_gate_widget мы проверяем",
+            StackTrace.current,
+          )),
       super(PostsState());
 
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
-  final int pageLimit = 5;
+  final int limit = 10;
+  final String channel = "bishkek_11_school";
 
-  final String userEmail;
-
-  Future<void> refresh({required Function(dynamic e) onFailed}) async {
+  Future<void> refresh() async {
     if (state.isLoading) return;
 
-    clear();
+    _lastDoc = null;
 
-    loadInitial(onFailed: onFailed);
+    loadInitial();
   }
 
-  Future<void> loadInitial({required Function(dynamic e) onFailed}) async {
-    emit(state.copyWith(isLoading: true));
+  Future<void> loadInitial() async {
+    emit(state.copyWith(isLoading: true, posts: []));
 
     try {
-      final snap = await _firestore
-          .collection("mukr_west_college")
-          .orderBy("created_at", descending: true)
-          .limit(pageLimit)
-          .get();
-      final posts = snap.docs.map((doc) => Post.fromDoc(doc)).toList();
+      final snap = await postsRepository.loadPosts(
+        limit: limit,
+        channel: channel,
+      );
+
+      final posts = snap.docs
+          .map((doc) => Post.fromDoc(doc: doc, userEmail: userEmail))
+          .toList();
 
       if (snap.docs.isNotEmpty) {
         _lastDoc = snap.docs.last;
@@ -46,110 +53,84 @@ class PostsCubit extends Cubit<PostsState> {
 
       emit(state.copyWith(posts: posts, isLoading: false));
 
-      _hasMore = posts.length == pageLimit;
+      _hasMore = posts.length == limit;
     } catch (e) {
-      emit(state.copyWith(isLoading: false));
-      debugPrint("PostsCubit loadInitial - $e");
-
-      onFailed(e);
+      emit(state.copyWith(isLoading: false, error: e));
     }
   }
 
-  void loadMore({required Function(dynamic e) onFailed}) async {
+  void loadMore() async {
     if (!_hasMore || state.isLoading || _lastDoc == null) return;
 
     emit(state.copyWith(isLoading: true));
 
     try {
-      final snap = await _firestore
-          .collection("mukr_west_college")
-          .orderBy("createdAt", descending: true)
-          .startAfterDocument(_lastDoc!)
-          .limit(pageLimit)
-          .get();
+      final snap = await postsRepository.loadPosts(
+        channel: channel,
+        limit: limit,
+        lastDoc: _lastDoc,
+      );
 
-      final posts = snap.docs.map((doc) => Post.fromDoc(doc)).toList();
+      final posts = snap.docs
+          .map((doc) => Post.fromDoc(doc: doc, userEmail: userEmail))
+          .toList();
       _lastDoc = snap.docs.last;
 
       emit(state.copyWith(posts: [...state.posts, ...posts], isLoading: false));
 
-      _hasMore = posts.length == pageLimit;
+      _hasMore = posts.length == limit;
     } catch (e) {
-      emit(state.copyWith(isLoading: false));
-      debugPrint("PostsCubit loadMore - $e");
-
-      onFailed(e);
+      emit(state.copyWith(isLoading: false, error: e));
     }
   }
 
-  void toggleLike(Post post) {
+  void toggleLike({required Post post, required int postIndex}) {
+    final updatedPosts = [...state.posts];
+    final updatedPost = updatedPosts[postIndex];
+
+    final bool updatedIsLiked = updatedPost.isLiked;
+
+    updatedPosts[postIndex] = updatedPost.copyWith(isLiked: !updatedIsLiked);
+
+    emit(state.copyWith(posts: updatedPosts));
+
     try {
-      final newPosts = [...state.posts];
-
-      if (post.likes.contains(userEmail)) {
-        final postIndex = newPosts.indexOf(post);
-
-        final newPostlikes = newPosts[postIndex].likes.toList();
-
-        newPostlikes.remove(userEmail);
-
-        newPosts[postIndex] = post.copyWith(likes: newPostlikes);
-
-        emit(state.copyWith(posts: newPosts));
-
-        _firestore.collection("mukr_west_college").doc(post.id).update({
-          "likes": FieldValue.arrayRemove([userEmail]),
-        });
-      } else {
-        newPosts[newPosts.indexOf(post)] = post.copyWith(
-          likes: [userEmail, ...post.likes],
-        );
-
-        _firestore.collection("mukr_west_college").doc(post.id).update({
-          "likes": FieldValue.arrayUnion([userEmail]),
-        });
-      }
-
-      emit(state.copyWith(posts: newPosts));
+      postsRepository.toggleLike(
+        postId: updatedPost.id,
+        isSetLike: !updatedIsLiked,
+        userEmail: userEmail,
+        channel: channel,
+      );
     } catch (e) {
-      debugPrint("PostsCubit toggleLike - e");
+      emit(state.copyWith(error: e));
     }
   }
 
-  void toggleDislike(Post post) {
+  void toggleDislike({required Post post, required int postIndex}) {
+    final updatedPosts = [...state.posts];
+    final updatedPost = updatedPosts[postIndex];
+
+    final bool updatedIsDisliked = !updatedPost.isDisliked;
+
+    updatedPosts[postIndex] = updatedPost.copyWith(
+      isDisliked: updatedIsDisliked,
+    );
+
+    emit(state.copyWith(posts: updatedPosts));
+
     try {
-      final newPosts = [...state.posts];
-
-      if (post.dislikes.contains(userEmail)) {
-        final postIndex = newPosts.indexOf(post);
-
-        final newPostDislikes = newPosts[postIndex].dislikes.toList();
-
-        newPostDislikes.remove(userEmail);
-
-        newPosts[postIndex] = post.copyWith(dislikes: newPostDislikes);
-
-        _firestore.collection("mukr_west_college").doc(post.id).update({
-          "dislikes": FieldValue.arrayRemove([userEmail]),
-        });
-      } else {
-        newPosts[newPosts.indexOf(post)] = post.copyWith(
-          dislikes: [userEmail, ...post.dislikes],
-        );
-
-        _firestore.collection("mukr_west_college").doc(post.id).update({
-          "dislikes": FieldValue.arrayUnion([userEmail]),
-        });
-      }
-
-      emit(state.copyWith(posts: newPosts));
+      postsRepository.toggleDislike(
+        postId: updatedPost.id,
+        isSetDislike: updatedIsDisliked,
+        userEmail: userEmail,
+        channel: channel,
+      );
     } catch (e) {
-      debugPrint("PostsCubit toggleDislike - e");
+      emit(state.copyWith(error: e));
     }
   }
 
-  void clear() {
-    emit(state.copyWith(posts: []));
-    _lastDoc = null;
+  void clearError() {
+    emit(state.copyWith(error: null));
   }
 }

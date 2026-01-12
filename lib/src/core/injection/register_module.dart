@@ -1,5 +1,6 @@
 import 'package:anonka/src/feature/app/data/firebase_remote_config_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -13,5 +14,13 @@ abstract class RegisterModule {
   Future<PackageInfo> packageInfo() => PackageInfo.fromPlatform();
 
   @singleton
-  FirebaseFirestore get firestore => FirebaseFirestore.instance;
+  FirebaseFirestore firestore() {
+    final firestore = FirebaseFirestore.instance;
+    firestore.settings = const Settings(persistenceEnabled: false);
+
+    return firestore;
+  }
+
+  @singleton
+  FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
 }

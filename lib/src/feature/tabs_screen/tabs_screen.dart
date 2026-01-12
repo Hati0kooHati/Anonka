@@ -1,5 +1,5 @@
-import 'package:anonka/src/core/constants/constants.dart';
-import 'package:anonka/src/feature/post/presentation/screen/posts_screen.dart';
+import 'package:anonka/src/core/constants/app_strings.dart';
+import 'package:anonka/src/feature/post/ui/screen/posts_screen.dart';
 import 'package:anonka/src/feature/profile/profile_screen.dart';
 import 'package:anonka/src/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int tabIndex = 0;
 
-  final screens = [PostsScreen(), ProfileScreen()];
+  final List<Widget> screens = [PostsScreen(), ProfileScreen()];
 
   final List<IconData> tabIcons = const [
     Icons.local_post_office_outlined,
