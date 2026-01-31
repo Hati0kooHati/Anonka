@@ -10,25 +10,27 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:anonka/src/core/injection/register_module.dart' as _i796;
-import 'package:anonka/src/feature/app/cubit/app_cubit.dart' as _i311;
 import 'package:anonka/src/feature/app/data/firebase_remote_config_service.dart'
     as _i712;
-import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_bloc.dart'
-    as _i759;
+import 'package:anonka/src/feature/app/presentation/cubit/app_cubit.dart'
+    as _i1035;
 import 'package:anonka/src/feature/auth/google_auth/data/google_auth_service.dart'
     as _i1013;
-import 'package:anonka/src/feature/create_post/cubit/create_post_cubit.dart'
-    as _i505;
+import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_bloc.dart'
+    as _i31;
 import 'package:anonka/src/feature/create_post/data/create_post_data_source.dart'
     as _i552;
 import 'package:anonka/src/feature/create_post/data/create_post_repository.dart'
     as _i793;
-import 'package:anonka/src/feature/post/comment/cubit/comments_cubit.dart'
-    as _i21;
+import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_cubit.dart'
+    as _i638;
 import 'package:anonka/src/feature/post/comment/data/comments_repository.dart'
     as _i889;
-import 'package:anonka/src/feature/post/cubit/posts_cubit.dart' as _i811;
+import 'package:anonka/src/feature/post/comment/presentation/cubit/comments_cubit.dart'
+    as _i354;
 import 'package:anonka/src/feature/post/data/posts_repository.dart' as _i791;
+import 'package:anonka/src/feature/post/presentation/cubit/posts_cubit.dart'
+    as _i1057;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
@@ -57,8 +59,8 @@ extension GetItInjectableX on _i174.GetIt {
     }, preResolve: true);
     gh.singleton<_i59.FirebaseAuth>(() => registerModule.firebaseAuth);
     gh.singleton<_i974.FirebaseFirestore>(() => registerModule.firestore());
-    gh.factory<_i759.GoogleAuthCubit>(
-      () => _i759.GoogleAuthCubit(gh<_i1013.GoogleAuthService>()),
+    gh.factory<_i31.GoogleAuthCubit>(
+      () => _i31.GoogleAuthCubit(gh<_i1013.GoogleAuthService>()),
     );
     gh.factory<_i552.CreatePostDataSource>(
       () => _i552.CreatePostDataSource(gh<_i974.FirebaseFirestore>()),
@@ -69,30 +71,31 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i791.PostsRepository>(
       () => _i791.PostsRepository(gh<_i974.FirebaseFirestore>()),
     );
-    gh.factory<_i311.AppBloc>(
-      () => _i311.AppBloc(
+    gh.factory<_i1035.AppBloc>(
+      () => _i1035.AppBloc(
         gh<_i712.FirebaseRemoteConfigService>(),
         gh<_i655.PackageInfo>(),
-      ),
-    );
-    gh.factoryParam<_i21.CommentsCubit, String, dynamic>(
-      (postId, _) => _i21.CommentsCubit(
-        postId,
-        gh<_i889.CommentsRepository>(),
-        gh<_i59.FirebaseAuth>(),
       ),
     );
     gh.factory<_i793.CreatePostRepository>(
       () => _i793.CreatePostRepository(gh<_i552.CreatePostDataSource>()),
     );
-    gh.factory<_i811.PostsCubit>(
-      () => _i811.PostsCubit(
+    gh.factoryParam<_i354.CommentsCubit, String, dynamic>(
+      (postId, _) => _i354.CommentsCubit(
+        postId,
+        gh<_i791.PostsRepository>(),
+        gh<_i889.CommentsRepository>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.factory<_i1057.PostsCubit>(
+      () => _i1057.PostsCubit(
         gh<_i791.PostsRepository>(),
         gh<_i59.FirebaseAuth>(),
       ),
     );
-    gh.factory<_i505.CreatePostCubit>(
-      () => _i505.CreatePostCubit(
+    gh.factory<_i638.CreatePostCubit>(
+      () => _i638.CreatePostCubit(
         gh<_i793.CreatePostRepository>(),
         gh<_i59.FirebaseAuth>(),
       ),

@@ -21,7 +21,7 @@ class PostsRepository {
     } else {
       return _firestore
           .collection(channel)
-          .orderBy("createdAt", descending: true)
+          .orderBy("created_at", descending: true)
           .startAfterDocument(lastDoc)
           .limit(limit)
           .get();
@@ -35,10 +35,21 @@ class PostsRepository {
     required String channel,
   }) async {
     _firestore.collection(channel).doc(postId).update({
-      "likes": isSetLike
+      "likes_count": FieldValue.increment(isSetLike ? 1 : -1),
+      "liked_users": isSetLike
           ? FieldValue.arrayUnion([userEmail])
           : FieldValue.arrayRemove([userEmail]),
     });
+  }
+
+  Future<void> report({
+    required String postId,
+    required String reportType,
+    required String channel,
+  }) async {
+    _firestore.collection("reports").doc("$channel $postId").set({
+      reportType: FieldValue.increment(1),
+    }, SetOptions(merge: true));
   }
 
   Future<void> toggleDislike({
@@ -48,9 +59,20 @@ class PostsRepository {
     required String channel,
   }) async {
     _firestore.collection(channel).doc(postId).update({
-      "dislikes": isSetDislike
+      "dislikes_count": FieldValue.increment(isSetDislike ? 1 : -1),
+      "disliked_users": isSetDislike
           ? FieldValue.arrayUnion([userEmail])
           : FieldValue.arrayRemove([userEmail]),
+    });
+  }
+
+  Future<void> increaseCommentsCount({
+    required String postId,
+    required String userEmail,
+    required String channel,
+  }) async {
+    _firestore.collection(channel).doc(postId).update({
+      "comments_count": FieldValue.increment(1),
     });
   }
 }

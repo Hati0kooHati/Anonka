@@ -1,7 +1,7 @@
 name: anonka
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.8.1
@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  freezed_annotation: ^3.1.0
   get_it: ^8.2.0
   injectable: ^2.5.2
   flutter_bloc: ^9.1.1
@@ -28,7 +27,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  freezed: ^3.2.3
   build_runner: ^2.4.13
   injectable_generator: ^2.5.1
 
@@ -36,26 +34,18 @@ flutter:
   generate: true
   uses-material-design: true
 
-  fonts:
-    - family: Montserrat
-      fonts:
-        - asset: fonts/Montserrat-Bold.ttf
-    - family: Roboto
-      fonts:
-        - asset: fonts/Roboto-Regular.ttf
-
 flutter_native_splash:
   color: "#000000"
-  image: assets/images/logo.png
+  image: assets/images/anonka-icon.png
   android: true
   ios: true
   web: false
 
   android_12:
     color: "#000000"
-    image: assets/images/logo.png
+    image: assets/images/anonka-icon.png
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/anonka-icon.png"

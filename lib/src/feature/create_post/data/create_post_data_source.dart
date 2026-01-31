@@ -8,11 +8,14 @@ class CreatePostDataSource {
 
   final FirebaseFirestore _firestore;
 
-  Future<void> createPost({required CreatePost createPost}) async {
+  Future<void> createPost({
+    required CreatePost createPost,
+    required String channel,
+  }) async {
     final postJson = createPost.toJson();
 
     postJson.addAll({"created_at": FieldValue.serverTimestamp()});
 
-    _firestore.collection("mukr_west_college").add(postJson);
+    _firestore.collection(channel).add(postJson);
   }
 }

@@ -9,6 +9,7 @@ class Post {
     required this.isDisliked,
     required this.likesCount,
     required this.dislikesCount,
+    required this.commentsCount,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class Post {
   final bool isDisliked;
   final int likesCount;
   final int dislikesCount;
+  final int commentsCount;
 
   factory Post.fromDoc({
     required DocumentSnapshot<Map<String, dynamic>> doc,
@@ -33,6 +35,7 @@ class Post {
       isDisliked: ((data['disliked_users'] as List?) ?? []).contains(userEmail),
       likesCount: data['likes_count'],
       dislikesCount: data['dislikes_count'],
+      commentsCount: data['comments_count'],
     );
   }
 
@@ -45,6 +48,7 @@ class Post {
     bool? isDisliked,
     int? likesCount,
     int? dislikesCount,
+    int? commentsCount,
   }) {
     return Post(
       id: id ?? this.id,
@@ -54,6 +58,7 @@ class Post {
       isDisliked: isDisliked ?? this.isDisliked,
       likesCount: likesCount ?? this.likesCount,
       dislikesCount: dislikesCount ?? this.dislikesCount,
+      commentsCount: commentsCount ?? this.commentsCount,
     );
   }
 }

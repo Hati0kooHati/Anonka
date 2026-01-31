@@ -11,7 +11,8 @@ class Comment {
 
     return Comment(
       text: doc["text"] ?? "",
-      createdAt: ((data['createdAt'] ?? Timestamp.now()) as Timestamp).toDate(),
+      createdAt: ((data['created_at'] ?? Timestamp.now()) as Timestamp)
+          .toDate(),
     );
   }
 }

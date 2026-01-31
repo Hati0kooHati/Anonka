@@ -5,6 +5,7 @@ class CreatePost {
   final String text;
   final int likesCount = 0;
   final int dislikesCount = 0;
+  final int commentsCount = 0;
   final List<String> likedUsers = [];
   final List<String> dislikedUsers = [];
 
@@ -15,6 +16,7 @@ class CreatePost {
       "likes_count": likesCount,
       "dislikes_count": dislikesCount,
       "liked_users": likedUsers,
+      "comments_count": commentsCount,
       "disliked_users": dislikedUsers,
     };
   }

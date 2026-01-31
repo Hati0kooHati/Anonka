@@ -1,4 +1,15 @@
 class AppStrings {
+  static const report = "Пожаловаться";
+  static const reportPublished = "Ваша жалоба на рассмотрении";
+  static const report1 = "Оскорбление, унижение, угроза или буллинг";
+  static const report2 = "Насилие, ненависть или эксплуатация";
+  static const report3 = "Продажа или реклама запрешенных товаров";
+  static const report4 = "Действия сексуального характера";
+  static const report5 = "Мошенничество, обман или спам";
+  static const report6 = "Ложная информация";
+  static const report7 = "Обвинения без доказательств";
+  static const report8 = "Самоубийство или нанесения себе увечий";
+
   static const updateAvailable = "обновление доступно!";
   static const updateSlogan =
       "Новое обновления приложении доступно. Обновите сейчас чтобы использовать новейшие функции!";

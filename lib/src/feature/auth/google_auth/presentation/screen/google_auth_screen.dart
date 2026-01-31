@@ -1,7 +1,7 @@
 import 'package:anonka/src/core/constants/app_strings.dart';
 import 'package:anonka/src/core/extension/object_extensions.dart';
-import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_bloc.dart';
-import 'package:anonka/src/feature/auth/google_auth/cubit/google_auth_state.dart';
+import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_bloc.dart';
+import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_state.dart';
 import 'package:anonka/src/feature/tabs_screen/tabs_screen.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:flutter/material.dart';

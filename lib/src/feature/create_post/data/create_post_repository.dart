@@ -8,7 +8,13 @@ class CreatePostRepository {
 
   final CreatePostDataSource createPostDataSource;
 
-  Future<void> createPost({required CreatePost createPost}) {
-    return createPostDataSource.createPost(createPost: createPost);
+  Future<void> createPost({
+    required CreatePost createPost,
+    required String channel,
+  }) {
+    return createPostDataSource.createPost(
+      createPost: createPost,
+      channel: channel,
+    );
   }
 }
