@@ -1,25 +1,22 @@
 import 'package:anonka/src/core/helper/copy_with_helper.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
 
 class CreatePostState {
-  const CreatePostState({
-    this.isLoading = false,
-    this.error,
-    this.isPostCreated = false,
-  });
+  const CreatePostState({this.isLoading = false, this.error, this.createdPost});
 
   final bool isLoading;
   final Object? error;
-  final bool isPostCreated;
+  final Post? createdPost;
 
   CreatePostState copyWith({
     bool? isLoading,
     Defaulted<Object>? error = const Omit(),
-    bool? isPostCreated,
+    Post? createdPost,
   }) {
     return CreatePostState(
       isLoading: isLoading ?? this.isLoading,
       error: error is Omit ? this.error : error as Object?,
-      isPostCreated: isPostCreated ?? this.isPostCreated,
+      createdPost: createdPost ?? this.createdPost,
     );
   }
 }

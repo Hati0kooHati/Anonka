@@ -4,6 +4,7 @@ import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_cu
 import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_state.dart';
 import 'package:anonka/src/core/widgets/custom_app_bar.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
+import 'package:anonka/src/feature/create_post/presentation/widget/confirm_create_post_alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,8 +21,8 @@ class CreatePostScreen
             context.read<CreatePostCubit>().clearError();
           }
 
-          if (state.isPostCreated) {
-            Navigator.pop(context, state.isPostCreated);
+          if (state.createdPost != null) {
+            Navigator.pop(context, state.createdPost);
           }
         },
       );
@@ -37,7 +38,7 @@ class CreatePostScreen
   void createPost() {
     final String text = _postTextController.text;
 
-    if (text.isEmpty) return;
+    if (state.isLoading || text.isEmpty) return;
 
     if (text.characters.length > 2000) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -47,8 +48,6 @@ class CreatePostScreen
 
       return;
     }
-
-    // TODO показывать material bunner с потверждением для создания поста
 
     bloc.createPost(text: text);
   }
@@ -83,6 +82,7 @@ class CreatePostScreen
                     ),
                     child: TextField(
                       controller: _postTextController,
+                      autofocus: true,
                       maxLines: null,
                       expands: true,
                       textAlignVertical: TextAlignVertical.top,

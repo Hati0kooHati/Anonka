@@ -37,7 +37,6 @@ flutter run
 Flutter: ^3.32.4(Stable)
 Bloc: ^9.1.1
 
-- freezed_annotation: ^3.1.0
 - get_it: ^8.2.0
 - injectable: ^2.5.2
 - flutter_bloc: ^9.1.1
@@ -48,7 +47,6 @@ Bloc: ^9.1.1
 - cloud_firestore: ^6.0.2
 - url_launcher: ^6.3.2
 - google_sign_in: ^7.2.0
-- freezed: ^3.2.3
 - build_runner: ^2.4.13
 - injectable_generator: ^2.5.1
 

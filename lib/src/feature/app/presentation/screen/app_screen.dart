@@ -27,7 +27,10 @@ class AppScreen extends StateblocWidget<AppBloc, AppState> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
       home: state.shouldShowUpdateScreen
-          ? UpdateAppDialog(launchUpdateUrl: bloc.launchUpdateUrl)
+          ? UpdateAppDialog(
+              launchUpdateUrl: bloc.launchUpdateUrl,
+              skipUpdate: bloc.hideUpdateAppScreen,
+            )
           : AuthGateWidget(),
       builder: (context, child) {
         return GestureDetector(

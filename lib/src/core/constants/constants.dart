@@ -1,5 +1,6 @@
 class LinkStore {
-  static const googlePlayUrl = "no url";
+  static const googlePlayUrl =
+      "https://play.google.com/store/apps/details?id=com.askra.anonkaapp";
   static const appStoreUrl = "no url";
 }
 

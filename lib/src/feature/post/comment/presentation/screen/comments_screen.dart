@@ -87,7 +87,7 @@ class CommentsScreen extends StateblocWidget<CommentsCubit, CommentsState> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: Center(
-              child: CircularProgressIndicator(color: Colors.purple),
+              child: CircularProgressIndicator(color: Colors.blue.shade700),
             ),
           ),
         ],
@@ -116,12 +116,6 @@ class CommentsScreen extends StateblocWidget<CommentsCubit, CommentsState> {
 
             return Padding(
               padding: const EdgeInsets.all(10.0),
-              // margin: const EdgeInsets.only(
-              //   left: 15,
-              //   right: 21,
-              //   top: 10,
-              //   bottom: 8,
-              // ),
               child: CommentWidget(comment: comment),
             );
           } else {
@@ -165,7 +159,7 @@ class CommentsScreen extends StateblocWidget<CommentsCubit, CommentsState> {
 
                   Expanded(
                     child: RefreshIndicator(
-                      color: Colors.purple,
+                      color: Colors.blue.shade800,
                       backgroundColor: Colors.white,
                       elevation: 0,
                       onRefresh: () => bloc.refresh(),

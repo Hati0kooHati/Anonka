@@ -21,6 +21,10 @@ class AppBloc extends Cubit<AppState> {
 
   Function(dynamic e)? showError;
 
+  void hideUpdateAppScreen() {
+    emit(state.copyWith(shouldShowUpdateScreen: false));
+  }
+
   void checkForUpdates() async {
     try {
       String minRequiredVersion = firebaseRemoteConfigService
@@ -40,6 +44,7 @@ class AppBloc extends Cubit<AppState> {
 
   void launchUpdateUrl() async {
     final isIos = Platform.isIOS;
+    print("work");
 
     final url = isIos ? LinkStore.appStoreUrl : LinkStore.googlePlayUrl;
     if (await canLaunchUrl(Uri.parse(url))) {

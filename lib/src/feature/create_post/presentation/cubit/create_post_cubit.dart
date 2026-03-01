@@ -1,6 +1,7 @@
 import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_state.dart';
 import 'package:anonka/src/feature/create_post/data/create_post_repository.dart';
 import 'package:anonka/src/feature/create_post/model/create_post.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -26,22 +27,18 @@ class CreatePostCubit extends Cubit<CreatePostState> {
 
     emit(state.copyWith(isLoading: true));
 
-    print(state.isLoading);
-
     try {
       final CreatePost createPost = CreatePost(
         userEmail: userEmail,
         text: text,
       );
 
-      await Future.delayed(Duration(seconds: 4));
-
-      await createPostRepository.createPost(
+      final Post createdPost = await createPostRepository.createPost(
         createPost: createPost,
         channel: channel,
       );
 
-      emit(state.copyWith(isLoading: false, isPostCreated: true));
+      emit(state.copyWith(isLoading: false, createdPost: createdPost));
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e));
     }

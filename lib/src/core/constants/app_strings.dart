@@ -10,10 +10,12 @@ class AppStrings {
   static const report7 = "Обвинения без доказательств";
   static const report8 = "Самоубийство или нанесения себе увечий";
 
-  static const updateAvailable = "обновление доступно!";
+  static const updateAvailable = "Anonka Обновление";
   static const updateSlogan =
-      "Новое обновления приложении доступно. Обновите сейчас чтобы использовать новейшие функции!";
+      "Пожалуйста обновите Anonka до последней версии. Версия которую вы используете устарела";
   static const update = "обновить";
+  static const skip = "Пропустить";
+
   static const anonka = "Anonka";
   static const speakFreely = "Говори Свободно";
   static const remainAnonym = "Оставайся Анонимным";
@@ -23,11 +25,15 @@ class AppStrings {
   static const noPosts = "Анонимки не найдены. Попробуйте создать";
   static const anonim = "Аноним";
   static const writeComment = "Напишите комментарий...";
+
   static const shareWithYourThoughts = "Поделись своим мнением";
   static const publish = "Опубликовать";
   static const yourAccount = "Твой аккаунт";
   static const noComments = "Нет комментариев...";
   static const longTextWarning = "Пиши поменьше";
+  static const publishPost = "Опубликовать пост";
+  static const yes = "да";
+  static const no = "нет";
 
   static const networkRequestFailed = "Проблемы с интернетом";
   static const invalidCredential = "Неверные учетные данные";

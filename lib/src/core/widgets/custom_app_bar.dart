@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final Widget? leading;
+
+  const CustomAppBar({super.key, this.leading});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -15,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         decoration: BoxDecoration(color: Colors.transparent),
       ),
       centerTitle: true,
-
+      leading: leading,
       title: const Text(
         'ПК МУКР',
         style: TextStyle(

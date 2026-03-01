@@ -63,7 +63,6 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(AppStrings.reportPublished)));
-    print("pubushed");
   }
 
   @override
@@ -76,7 +75,7 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           SizedBox(height: height * 0.40),
-          Center(child: CircularProgressIndicator(color: Colors.purple)),
+          Center(child: CircularProgressIndicator(color: Colors.blue.shade800)),
         ],
       );
     } else if (state.posts.isEmpty) {
@@ -118,7 +117,7 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
     }
 
     return RefreshIndicator(
-      color: Colors.purple,
+      color: Colors.blue.shade800,
       backgroundColor: Colors.white,
       elevation: 0,
       onRefresh: bloc.refresh,

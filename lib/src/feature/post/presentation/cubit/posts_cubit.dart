@@ -148,4 +148,8 @@ class PostsCubit extends Cubit<PostsState> {
   void clearError() {
     emit(state.copyWith(error: null));
   }
+
+  void insertCreatedPost(Post createdPost) {
+    emit(state.copyWith(posts: [createdPost, ...state.posts]));
+  }
 }

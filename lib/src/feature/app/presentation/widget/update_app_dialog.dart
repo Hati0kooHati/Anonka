@@ -2,89 +2,94 @@ import 'package:anonka/src/core/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class UpdateAppDialog extends StatelessWidget {
-  const UpdateAppDialog({super.key, required this.launchUpdateUrl});
+  const UpdateAppDialog({
+    super.key,
+    required this.launchUpdateUrl,
+    required this.skipUpdate,
+  });
 
   final Function() launchUpdateUrl;
+  final Function() skipUpdate;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Dialog(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
         elevation: 0,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white.withAlpha(20),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(200),
-                blurRadius: 20,
-                spreadRadius: 5,
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blueAccent.withAlpha(200),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: skipUpdate,
+                  child: Text(
+                    AppStrings.skip,
+                    style: TextStyle(color: Colors.blue.shade700),
+                  ),
                 ),
-                child: const Icon(
-                  Icons.system_update,
-                  size: 50,
-                  color: Colors.deepPurple,
-                ),
+              ],
+            ),
+            const SizedBox(height: 70),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade900,
+                borderRadius: BorderRadius.circular(20),
               ),
-              const SizedBox(height: 16),
-              const Text(
-                AppStrings.updateAvailable,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                AppStrings.updateSlogan,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
-                    onPressed: launchUpdateUrl,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 5,
+                  const SizedBox(height: 20),
+                  const Text(
+                    AppStrings.updateAvailable,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    child: const Text(
-                      AppStrings.update,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    AppStrings.updateSlogan,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 40,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade900,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: launchUpdateUrl,
+                          child: Text(
+                            AppStrings.update,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue.shade700,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

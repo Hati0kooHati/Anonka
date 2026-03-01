@@ -3,3 +3,12 @@ b:
 
 f:
 	dart fix --apply
+
+ab:
+    flutter build appbundle
+
+apkd:
+    flutter build apk --debug
+
+apk:
+    flutter build apk

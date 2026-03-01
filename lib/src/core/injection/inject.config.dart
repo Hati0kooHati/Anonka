@@ -18,8 +18,6 @@ import 'package:anonka/src/feature/auth/google_auth/data/google_auth_service.dar
     as _i1013;
 import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_bloc.dart'
     as _i31;
-import 'package:anonka/src/feature/create_post/data/create_post_data_source.dart'
-    as _i552;
 import 'package:anonka/src/feature/create_post/data/create_post_repository.dart'
     as _i793;
 import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_cubit.dart'
@@ -62,8 +60,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i31.GoogleAuthCubit>(
       () => _i31.GoogleAuthCubit(gh<_i1013.GoogleAuthService>()),
     );
-    gh.factory<_i552.CreatePostDataSource>(
-      () => _i552.CreatePostDataSource(gh<_i974.FirebaseFirestore>()),
+    gh.factory<_i793.CreatePostRepository>(
+      () => _i793.CreatePostRepository(gh<_i974.FirebaseFirestore>()),
     );
     gh.factory<_i889.CommentsRepository>(
       () => _i889.CommentsRepository(gh<_i974.FirebaseFirestore>()),
@@ -76,9 +74,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i712.FirebaseRemoteConfigService>(),
         gh<_i655.PackageInfo>(),
       ),
-    );
-    gh.factory<_i793.CreatePostRepository>(
-      () => _i793.CreatePostRepository(gh<_i552.CreatePostDataSource>()),
     );
     gh.factoryParam<_i354.CommentsCubit, String, dynamic>(
       (postId, _) => _i354.CommentsCubit(

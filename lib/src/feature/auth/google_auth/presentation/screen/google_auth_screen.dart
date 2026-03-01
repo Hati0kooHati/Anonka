@@ -1,5 +1,7 @@
 import 'package:anonka/src/core/constants/app_strings.dart';
+import 'package:anonka/src/core/constants/assets.dart';
 import 'package:anonka/src/core/extension/object_extensions.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_bloc.dart';
 import 'package:anonka/src/feature/auth/google_auth/presentation/cubit/google_auth_state.dart';
 import 'package:anonka/src/feature/tabs_screen/tabs_screen.dart';
@@ -167,10 +169,9 @@ class GoogleAuthScreen
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                'https://www.google.com/favicon.ico',
-                                width: 24,
-                                height: 24,
+                              SvgPicture.asset(
+                                Assets.googleLogoSvg,
+                                height: 25,
                               ),
                               const SizedBox(width: 8),
                               Text(

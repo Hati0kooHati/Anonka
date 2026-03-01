@@ -1,7 +1,7 @@
 name: anonka
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.0.1+2
+version: 1.1.0+5
 
 environment:
   sdk: ^3.8.1
@@ -22,6 +22,7 @@ dependencies:
   google_sign_in: ^7.2.0
   flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +34,12 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - assets/svg_icons/
+  fonts:
+    - family: icomoon
+      fonts:
+        - asset: assets/fonts/icomoon.ttf
 
 flutter_native_splash:
   color: "#000000"

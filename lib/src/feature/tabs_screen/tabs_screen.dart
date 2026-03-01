@@ -1,4 +1,5 @@
 import 'package:anonka/src/feature/create_post/presentation/screen/create_post_screen.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:anonka/src/feature/post/presentation/screen/posts_screen.dart';
 import 'package:anonka/src/feature/profile/profile_screen.dart';
 import 'package:anonka/src/core/widgets/custom_app_bar.dart';
@@ -14,34 +15,40 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int currentTabIndex = 0;
 
-  final List<Widget> screens = [PostsScreen(), SizedBox(), ProfileScreen()];
+  final List<Widget> screens = [PostsScreen(), ProfileScreen()];
 
   onTabTapped(int selectedIndex) async {
     if (selectedIndex == currentTabIndex) return;
-
-    if (selectedIndex == 1) {
-      final bool? isPostCreate = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => CreatePostScreen()),
-      );
-
-      if (isPostCreate != null && isPostCreate) {
-        (screens[0] as PostsScreen).bloc.loadInitial();
-      }
-
-      return;
-    }
 
     setState(() {
       currentTabIndex = selectedIndex;
     });
   }
 
+  void goToCreatePostScreen() async {
+    final Post? createdPost = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => CreatePostScreen()),
+    );
+
+    if (createdPost != null) {
+      (screens[0] as PostsScreen).bloc.insertCreatedPost(createdPost);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+        leading: currentTabIndex == 0
+            ? IconButton(
+                onPressed: goToCreatePostScreen,
+                icon: Icon(Icons.add, size: 40),
+              )
+            : null,
+      ),
       body: IndexedStack(index: currentTabIndex, children: screens),
+      backgroundColor: Colors.black,
       bottomNavigationBar: SizedBox(
         height: 80,
         child: Row(
@@ -49,13 +56,33 @@ class _TabsScreenState extends State<TabsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             for (final (iconIndex, icon) in [
-              Icons.local_post_office_outlined,
-              Icons.add,
+              Icons.home_filled,
               Icons.person_outline,
             ].indexed) ...[
-              IconButton(
-                icon: Icon(icon, size: 38, color: const Color(0xFFFFFFFF)),
-                onPressed: () => onTabTapped(iconIndex),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: SizedBox(
+                  height: 55,
+                  width: 80,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: currentTabIndex == iconIndex
+                          ? Colors.white.withAlpha(50)
+                          : null,
+                    ),
+                    child: Center(
+                      child: IconButton(
+                        icon: Icon(
+                          icon,
+                          size: 38,
+                          color: const Color(0xFFFFFFFF),
+                        ),
+                        onPressed: () => onTabTapped(iconIndex),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ],
