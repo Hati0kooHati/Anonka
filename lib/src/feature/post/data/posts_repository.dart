@@ -75,4 +75,40 @@ class PostsRepository {
       "comments_count": FieldValue.increment(1),
     });
   }
+
+  /// Vote on a poll option.
+  /// [optionIndex] — the index inside poll.options array.
+  Future<void> votePoll({
+    required String postId,
+    required int optionIndex,
+    required String userEmail,
+    required String channel,
+  }) async {
+    // Use a transaction so we can update the nested array element atomically.
+    await _firestore.runTransaction((transaction) async {
+      final docRef = _firestore.collection(channel).doc(postId);
+      final snap = await transaction.get(docRef);
+      final data = snap.data()!;
+      final poll = Map<String, dynamic>.from(data['poll'] as Map);
+      final options = List<dynamic>.from(poll['options'] as List);
+
+      // Guard: user already voted somewhere
+      for (final opt in options) {
+        final votedUsers = List<String>.from(opt['voted_users'] ?? []);
+        if (votedUsers.contains(userEmail)) return;
+      }
+
+      final option = Map<String, dynamic>.from(options[optionIndex] as Map);
+      option['votes_count'] = (option['votes_count'] as int) + 1;
+      option['voted_users'] = [
+        ...List<String>.from(option['voted_users'] ?? []),
+        userEmail,
+      ];
+      options[optionIndex] = option;
+      poll['options'] = options;
+      poll['total_votes'] = (poll['total_votes'] as int) + 1;
+
+      transaction.update(docRef, {'poll': poll});
+    });
+  }
 }

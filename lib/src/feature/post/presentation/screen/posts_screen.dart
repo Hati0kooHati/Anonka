@@ -11,22 +11,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
   PostsScreen({super.key})
-    : super(
-        listener: (context, state) {
-          if (state.error != null) {
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error!.getErrorMessage())),
-            );
-            context.read<PostsCubit>().clearError();
-          }
-        },
-      );
+      : super(
+    listener: (context, state) {
+      if (state.error != null) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.error!.getErrorMessage())),
+        );
+        context.read<PostsCubit>().clearError();
+      }
+    },
+  );
 
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback(((_) {
       bloc.loadInitial();
     }));
@@ -59,10 +58,8 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
 
   void report({required String reportType, required String postId}) {
     bloc.report(reportType: reportType, postId: postId);
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(AppStrings.reportPublished)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.reportPublished)));
   }
 
   @override
@@ -105,6 +102,7 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
               toggleDislike: bloc.toggleDislike,
               onCommentPressed: showCommentsSheet,
               report: report,
+              votePoll: bloc.votePoll,
             );
           } else {
             return const Padding(

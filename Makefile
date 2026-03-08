@@ -5,10 +5,10 @@ f:
 	dart fix --apply
 
 ab:
-    flutter build appbundle
+	flutter build appbundle
 
 apkd:
-    flutter build apk --debug
+	flutter build apk --debug
 
 apk:
-    flutter build apk
+	flutter build apk
