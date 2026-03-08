@@ -1,7 +1,7 @@
 name: anonka
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.1.0+5
+version: 1.2.0+6
 
 environment:
   sdk: ^3.8.1

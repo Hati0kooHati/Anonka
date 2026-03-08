@@ -1,4 +1,14 @@
 import 'package:anonka/src/feature/post/data/posts_repository.dart';
+import 'package:anonka/src/feature/post/model/poll.dart';
+import 'package:anonka/src/feature/post/model/poll_option.dart';
+import 'package:anonka/src/feature/post/model/post.dart';
+import 'package:anonka/src/feature/post/presentation/cubit/posts_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+
+import 'package:anonka/src/feature/post/data/posts_repository.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:anonka/src/feature/post/presentation/cubit/posts_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,9 +38,7 @@ class PostsCubit extends Cubit<PostsState> {
 
   Future<void> refresh() async {
     if (state.isLoading) return;
-
     _lastDoc = null;
-
     loadInitial();
   }
 
@@ -52,7 +60,6 @@ class PostsCubit extends Cubit<PostsState> {
       }
 
       emit(state.copyWith(posts: posts, isLoading: false));
-
       _hasMore = posts.length == limit;
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e));
@@ -77,7 +84,6 @@ class PostsCubit extends Cubit<PostsState> {
       _lastDoc = snap.docs.last;
 
       emit(state.copyWith(posts: [...state.posts, ...posts], isLoading: false));
-
       _hasMore = posts.length == limit;
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e));
@@ -99,7 +105,6 @@ class PostsCubit extends Cubit<PostsState> {
   void toggleLike({required Post post, required int postIndex}) {
     final updatedPosts = [...state.posts];
     final updatedPost = updatedPosts[postIndex];
-
     final bool updatedIsLiked = !updatedPost.isLiked;
 
     updatedPosts[postIndex] = updatedPost.copyWith(
@@ -123,7 +128,6 @@ class PostsCubit extends Cubit<PostsState> {
   void toggleDislike({required Post post, required int postIndex}) {
     final updatedPosts = [...state.posts];
     final updatedPost = updatedPosts[postIndex];
-
     final bool updatedIsDisliked = !updatedPost.isDisliked;
 
     updatedPosts[postIndex] = updatedPost.copyWith(
@@ -132,11 +136,49 @@ class PostsCubit extends Cubit<PostsState> {
     );
 
     emit(state.copyWith(posts: updatedPosts));
-
     try {
       postsRepository.toggleDislike(
         postId: updatedPost.id,
         isSetDislike: updatedIsDisliked,
+        userEmail: userEmail,
+        channel: channel,
+      );
+    } catch (e) {
+      emit(state.copyWith(error: e));
+    }
+  }
+
+  /// Optimistically update poll vote in state, then persist to Firestore.
+  void votePoll({required int postIndex, required int optionIndex}) {
+    final updatedPosts = [...state.posts];
+    final post = updatedPosts[postIndex];
+    final poll = post.poll;
+
+    if (poll == null) return;
+
+    // Guard: already voted
+    if (poll.votedOptionIndex(userEmail) != null) return;
+
+    final updatedOptions = List<PollOption>.from(poll.options);
+    final oldOption = updatedOptions[optionIndex];
+    updatedOptions[optionIndex] = oldOption.copyWith(
+      votesCount: oldOption.votesCount + 1,
+      votedUsers: [...oldOption.votedUsers, userEmail],
+    );
+
+    updatedPosts[postIndex] = post.copyWith(
+      poll: poll.copyWith(
+        options: updatedOptions,
+        totalVotes: poll.totalVotes + 1,
+      ),
+    );
+
+    emit(state.copyWith(posts: updatedPosts));
+
+    try {
+      postsRepository.votePoll(
+        postId: post.id,
+        optionIndex: optionIndex,
         userEmail: userEmail,
         channel: channel,
       );

@@ -1,4 +1,13 @@
 class AppStrings {
+  const AppStrings._();
+  static const votesOv = "голосов";
+  static const vote = "голос";
+  static const votes = "голоса";
+
+  static const survey = "Опрос";
+  static const question = "Вопрос";
+  static const option = "Вариант";
+  static const addOption = "Добавить вариант";
   static const report = "Пожаловаться";
   static const reportPublished = "Ваша жалоба на рассмотрении";
   static const report1 = "Оскорбление, унижение, угроза или буллинг";

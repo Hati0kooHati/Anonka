@@ -1,4 +1,6 @@
 import 'package:anonka/src/feature/create_post/model/create_post.dart';
+import 'package:anonka/src/feature/post/model/poll.dart';
+import 'package:anonka/src/feature/post/model/poll_option.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
@@ -29,6 +31,21 @@ class CreatePostRepository {
       likesCount: 0,
       dislikesCount: 0,
       commentsCount: 0,
+      poll: createPost.poll != null
+          ? Poll(
+              question: createPost.poll!.question,
+              options: createPost.poll!.options
+                  .map(
+                    (optionText) => PollOption(
+                      text: optionText,
+                      votesCount: 0,
+                      votedUsers: [],
+                    ),
+                  )
+                  .toList(),
+              totalVotes: 0,
+            )
+          : null,
     );
   }
 }
