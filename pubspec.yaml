@@ -1,7 +1,7 @@
 name: anonka
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.2.0+6
+version: 1.3.0+7
 
 environment:
   sdk: ^3.8.1
@@ -23,6 +23,11 @@ dependencies:
   flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
   flutter_svg: ^2.2.3
+  image_picker: ^1.2.1
+  flutter_image_compress: ^2.4.0
+  firebase_storage: ^13.1.0
+  cached_network_image: ^3.4.1
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:

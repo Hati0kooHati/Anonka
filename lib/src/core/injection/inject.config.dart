@@ -31,9 +31,11 @@ import 'package:anonka/src/feature/post/presentation/cubit/posts_cubit.dart'
     as _i1057;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
+import 'package:firebase_storage/firebase_storage.dart' as _i457;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:package_info_plus/package_info_plus.dart' as _i655;
+import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -57,17 +59,25 @@ extension GetItInjectableX on _i174.GetIt {
     }, preResolve: true);
     gh.singleton<_i59.FirebaseAuth>(() => registerModule.firebaseAuth);
     gh.singleton<_i974.FirebaseFirestore>(() => registerModule.firestore());
+    gh.singleton<_i457.FirebaseStorage>(() => registerModule.firebaseStorage());
+    await gh.singletonAsync<_i460.SharedPreferences>(
+      () => registerModule.preferences(),
+      preResolve: true,
+    );
     gh.factory<_i31.GoogleAuthCubit>(
       () => _i31.GoogleAuthCubit(gh<_i1013.GoogleAuthService>()),
-    );
-    gh.factory<_i793.CreatePostRepository>(
-      () => _i793.CreatePostRepository(gh<_i974.FirebaseFirestore>()),
     );
     gh.factory<_i889.CommentsRepository>(
       () => _i889.CommentsRepository(gh<_i974.FirebaseFirestore>()),
     );
     gh.factory<_i791.PostsRepository>(
       () => _i791.PostsRepository(gh<_i974.FirebaseFirestore>()),
+    );
+    gh.factory<_i793.CreatePostRepository>(
+      () => _i793.CreatePostRepository(
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i457.FirebaseStorage>(),
+      ),
     );
     gh.factory<_i1035.AppBloc>(
       () => _i1035.AppBloc(
@@ -92,6 +102,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i638.CreatePostCubit>(
       () => _i638.CreatePostCubit(
         gh<_i793.CreatePostRepository>(),
+        gh<_i460.SharedPreferences>(),
         gh<_i59.FirebaseAuth>(),
       ),
     );

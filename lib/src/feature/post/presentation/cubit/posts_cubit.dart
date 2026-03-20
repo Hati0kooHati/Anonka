@@ -1,14 +1,5 @@
 import 'package:anonka/src/feature/post/data/posts_repository.dart';
-import 'package:anonka/src/feature/post/model/poll.dart';
 import 'package:anonka/src/feature/post/model/poll_option.dart';
-import 'package:anonka/src/feature/post/model/post.dart';
-import 'package:anonka/src/feature/post/presentation/cubit/posts_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
-
-import 'package:anonka/src/feature/post/data/posts_repository.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:anonka/src/feature/post/presentation/cubit/posts_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

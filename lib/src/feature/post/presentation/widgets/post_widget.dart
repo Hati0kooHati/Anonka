@@ -1,10 +1,12 @@
 import 'package:anonka/src/core/constants/app_strings.dart';
 import 'package:anonka/src/core/extension/date_time_extentions.dart';
 import 'package:anonka/src/core/icons/icomoon_icons.dart';
+import 'package:anonka/src/feature/create_post/presentation/widget/full_screen_image_widget.dart';
 import 'package:anonka/src/feature/post/model/poll.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
 import 'package:anonka/src/feature/post/presentation/widgets/action_button.dart';
 import 'package:anonka/src/feature/post/presentation/widgets/report_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PostWidget extends StatelessWidget {
@@ -97,7 +99,7 @@ class PostWidget extends StatelessWidget {
                                     },
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.report_gmailerrorred,
@@ -133,14 +135,45 @@ class PostWidget extends StatelessWidget {
 
               const SizedBox(height: 12),
 
+              // image
+              if (post.imageUrl != null)
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          FullScreenImageWidget(url: post.imageUrl!),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CachedNetworkImage(
+                      imageUrl: post.imageUrl!,
+                      fit: BoxFit.cover,
+                      width: 120,
+                      placeholder: (context, url) => DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.grey),
+                        child: SizedBox(height: 120, width: 90),
+                      ),
+                      errorWidget: (context, url, error) => DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.grey),
+                        child: SizedBox(
+                          height: 120,
+                          width: 90,
+                          child: Center(child: const Icon(Icons.broken_image)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
+
               // Poll or text content
               if (post.isPoll)
                 _PollWidget(
                   poll: post.poll!,
-                  onVote: (optionIndex) => votePoll(
-                    postIndex: postIndex,
-                    optionIndex: optionIndex,
-                  ),
+                  onVote: (optionIndex) =>
+                      votePoll(postIndex: postIndex, optionIndex: optionIndex),
                   // We pass the user check via the poll itself (hasVoted),
                   // so the widget knows internally whether user already voted.
                 )
