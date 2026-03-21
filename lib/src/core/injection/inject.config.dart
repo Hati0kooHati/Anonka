@@ -22,9 +22,9 @@ import 'package:anonka/src/feature/create_post/data/create_post_repository.dart'
     as _i793;
 import 'package:anonka/src/feature/create_post/presentation/cubit/create_post_cubit.dart'
     as _i638;
-import 'package:anonka/src/feature/post/comment/data/comments_repository.dart'
+import 'package:anonka/src/feature/comment/data/comments_repository.dart'
     as _i889;
-import 'package:anonka/src/feature/post/comment/presentation/cubit/comments_cubit.dart'
+import 'package:anonka/src/feature/comment/presentation/cubit/comments_cubit.dart'
     as _i354;
 import 'package:anonka/src/feature/post/data/posts_repository.dart' as _i791;
 import 'package:anonka/src/feature/post/presentation/cubit/posts_cubit.dart'

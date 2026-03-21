@@ -178,7 +178,7 @@ class PostWidget extends StatelessWidget {
                   // so the widget knows internally whether user already voted.
                 )
               else
-                Text(
+                SelectableText(
                   post.text,
                   style: const TextStyle(
                     fontSize: 16,

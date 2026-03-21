@@ -39,6 +39,9 @@ class AppStrings {
   static const publish = "Опубликовать";
   static const yourAccount = "Твой аккаунт";
   static const noComments = "Нет комментариев...";
+  static const answer = "Ответить";
+  static const hideReplies = "Скрыть ответы";
+  static const showReplies = "Показать ответы";
   static const longTextWarning = "Пиши поменьше";
   static const publishPost = "Опубликовать пост";
   static const yes = "да";

@@ -2,7 +2,7 @@ import 'package:anonka/src/core/constants/app_strings.dart';
 import 'package:anonka/src/core/extension/object_extensions.dart';
 import 'package:anonka/src/core/widgets/statebloc_widget.dart';
 import 'package:anonka/src/feature/post/model/post.dart';
-import 'package:anonka/src/feature/post/comment/presentation/screen/comments_screen.dart';
+import 'package:anonka/src/feature/comment/presentation/screen/comments_screen.dart';
 import 'package:anonka/src/feature/post/presentation/cubit/posts_cubit.dart';
 import 'package:anonka/src/feature/post/presentation/cubit/posts_state.dart';
 import 'package:anonka/src/feature/post/presentation/widgets/post_widget.dart';
@@ -11,17 +11,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
   PostsScreen({super.key})
-      : super(
-    listener: (context, state) {
-      if (state.error != null) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(state.error!.getErrorMessage())),
-        );
-        context.read<PostsCubit>().clearError();
-      }
-    },
-  );
+    : super(
+        listener: (context, state) {
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error!.getErrorMessage())),
+            );
+            context.read<PostsCubit>().clearError();
+          }
+        },
+      );
 
   @override
   void initState() {
@@ -58,8 +58,9 @@ class PostsScreen extends StateblocWidget<PostsCubit, PostsState> {
 
   void report({required String reportType, required String postId}) {
     bloc.report(reportType: reportType, postId: postId);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(AppStrings.reportPublished)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(AppStrings.reportPublished)));
   }
 
   @override

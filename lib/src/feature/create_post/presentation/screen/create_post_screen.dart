@@ -90,7 +90,7 @@ class CreatePostScreen
       final text = _postTextController.text;
       if (text.isEmpty) return;
 
-      if (text.characters.length > 2000) {
+      if (text.characters.length > 8000) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(
           context,

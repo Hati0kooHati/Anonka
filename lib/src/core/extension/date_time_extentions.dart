@@ -52,11 +52,11 @@ extension DateTimeExtentions on DateTime {
     final months = (diff.inDays % 365) ~/ 30;
 
     if (years >= 1) {
-      return "${this.day} ${kMonthNames[this.month - 1]}, ${this.year}";
+      return "$day ${kMonthNames[this.month - 1]}, ${this.year}";
     }
 
     if (diff.inDays > 7) {
-      return "${this.day} ${kMonthNames[this.month - 1]}";
+      return "$day ${kMonthNames[this.month - 1]}";
     }
 
     return this.toString();
